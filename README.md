@@ -1,12 +1,12 @@
 <div align="center">
 
 ```
-███╗   ███╗██████╗ ██████╗ ██████╗  █████╗ ██╗███╗   ██╗
-████╗ ████║██╔══██╗██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║
-██╔████╔██║██║  ██║██████╔╝██████╔╝███████║██║██╔██╗ ██║
-██║╚██╔╝██║██║  ██║██╔══██╗██╔══██╗██╔══██║██║██║╚██╗██║
-██║ ╚═╝ ██║██████╔╝██████╔╝██║  ██║██║  ██║██║██║ ╚████║
-╚═╝     ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+███████╗████████╗███████╗████████╗██╗  ██╗███████╗███████╗██████╗ 
+██╔════╝╚══██╔══╝██╔════╝╚══██╔══╝██║ ██╔╝██╔════╝██╔════╝██╔══██╗
+███████╗   ██║   █████╗     ██║   █████╔╝ █████╗  █████╗  ██████╔╝
+╚════██║   ██║   ██╔══╝     ██║   ██╔═██╗ ██╔══╝  ██╔══╝  ██╔═══╝ 
+███████║   ██║   ███████╗   ██║   ██║  ██╗███████╗███████╗██║     
+╚══════╝   ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝     
 ```
 
 ### *XML protocol framework + false-positive catalog for Claude Code.*
@@ -18,7 +18,7 @@
 [![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
-[![Version](https://img.shields.io/badge/version-v0.3.0-5FE5D4)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.4.0-5FE5D4)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
 </div>
@@ -209,7 +209,7 @@ Honest comparison, based on [competitive research](https://github.com/chanjoongx
 | | **stetkeep** | [TDD-Guard](https://github.com/nizos/tdd-guard) | [claude-guardrails](https://github.com/dwarvesf/claude-guardrails) | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
 |---|---|---|---|---|---|
 | **Scope** | XML protocols + FP catalog | TDD-specific blocking | Security permissions | Subagent library | Kitchen-sink toolkit |
-| **Stars (Apr 2026)** | v0.3.0 launch | 2K | 12 | 17.7K | 160K |
+| **Stars (Apr 2026)** | v0.4.0 launch | 2K | 12 | 17.7K | 160K |
 | **Hook enforcement** | ✅ | ✅ | ✅ | ❌ | ✅ |
 | **Tool-scoped subagents** | ✅ | ❌ | ❌ | ✅ | ✅ |
 | **XML-structured protocols** | ✅ | ❌ | ❌ | ❌ | ❌ |
@@ -345,6 +345,13 @@ Yes. `coexist` mode (default) preserves everything — only appends a 3-line boo
 
 For full stetkeep behavior, use npm install. For lightweight subagent access, plugin install is enough.
 
+### Why the name "stetkeep"?
+`stet` (Latin: *"let it stand"*) is the traditional editorial mark an editor writes over proposed deletions to cancel them and preserve the original text. `stetkeep` applies the same principle to code: tell Claude to leave your intentional code alone.
+
+Two unrelated prior uses of "stet" exist in tech history: an IBM VM/CMS text editor from 1977 by Mike Cowlishaw (now historical, no active maintenance) and STET SA, a European payment processor (B2B, unrelated domain). stetkeep is neither of those. The name reclaims the original editorial meaning for AI-era code editing.
+
+This project was originally launched as `mdbrain` on 2026-04-19, but was renamed to `stetkeep` one day later after discovering a brand conflict with mediaire's `mdbrain` medical AI software. See [CHANGELOG v0.4.0](CHANGELOG.md) for the full story.
+
 ### Built with AI?
 Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing stetkeep is built to prevent.
 
@@ -381,7 +388,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Highest-value contributions:
 
 <div align="center">
 
-**Built by [CJ Kim](https://github.com/chanjoongx) · Stress-tested with Claude · Published 2026-04-19**
+**Built by [CJ Kim](https://github.com/chanjoongx) · Stress-tested with Claude · Launched 2026-04-19 · Renamed to `stetkeep` 2026-04-20**
 
 *The model is eager. The Safety Net is skeptical. The XML protocol is structured.*
 
