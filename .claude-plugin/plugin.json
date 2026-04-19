@@ -25,6 +25,9 @@
     "./commands/craft-audit.md",
     "./commands/perf-audit.md"
   ],
-  "agents": "./agents/",
-  "hooks": "./hooks/hooks.json"
+  "agents": [
+    "./agents/brain-router.md",
+    "./agents/craft-specialist.md",
+    "./agents/perf-specialist.md"
+  ]
 }

@@ -11,10 +11,10 @@
   "plugins": [
     {
       "name": "mdbrain",
-      "source": ".",
-      "description": "Mechanical guardrails against AI false-positive refactors. Hook-enforced Safety Net, tool-scoped subagents, XML-structured protocols, false-positive catalog.",
-      "version": "0.3.0",
-      "keywords": ["guardrails", "protocols", "code-quality", "performance"]
+      "source": "./",
+      "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails via hooks, tool-scoped subagents, path-scoped rules.",
+      "keywords": ["guardrails", "protocols", "xml-protocols", "false-positive-catalog", "code-quality", "performance"],
+      "category": "developer-tools"
     }
   ]
 }
