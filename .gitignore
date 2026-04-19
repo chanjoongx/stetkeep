@@ -1,0 +1,42 @@
+# Backup files (from install.ps1 fresh mode)
+*.backup-*
+
+# Claude Code user-local state (never commit)
+# — we ship agents/, commands/, hooks/, rules/, settings.example.json intentionally
+# — users' personal state below must stay out of git
+.claude/settings.local.json
+.claude/settings.json
+.claude/todos/
+.claude/cache/
+.claude/history/
+.claude/*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Node (in case examples/ adds node_modules later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (for CLI tool if added later)
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# PERF history (project-specific, not shared)
+.perf-history/

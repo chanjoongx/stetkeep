@@ -1,0 +1,61 @@
+{
+  "$schema": "https://claude.com/schemas/settings.json",
+  "_comment": "Copy to .claude/settings.json in your project root. Safety Net is enforced by hooks, not by prompt assertion.",
+  "_platform_note": "The hook command below uses bash. macOS/Linux/Git Bash users: keep as-is. Windows native PowerShell users: change 'command' to 'powershell -File $CLAUDE_PROJECT_DIR/.claude/hooks/safety-net.ps1' (use the .ps1 file we ship, not .sh).",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "_comment_platforms": "bash version (macOS/Linux/Git Bash). For Windows native PowerShell, replace with: powershell -File $CLAUDE_PROJECT_DIR/.claude/hooks/safety-net.ps1",
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/safety-net.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'mdbrain Safety Net active. Run /brain-scan to map the MD ecosystem.'",
+            "timeout": 2
+          }
+        ]
+      }
+    ]
+  },
+
+  "permissions": {
+    "deny": [
+      "Edit(legacy/**)",
+      "Edit(generated/**)",
+      "Edit(vendor/**)",
+      "Edit(node_modules/**)",
+      "Edit(dist/**)",
+      "Edit(build/**)",
+      "Edit(.next/**)",
+      "Write(legacy/**)",
+      "Write(generated/**)",
+      "Write(vendor/**)"
+    ],
+    "ask": [
+      "Bash(rm -rf *)",
+      "Bash(git clean -fd)",
+      "Bash(git push --force*)",
+      "Edit(**/*.{env,env.local,env.production})"
+    ]
+  },
+
+  "_notes": {
+    "hooks": "PreToolUse hook enforces Safety Net layers 1-2 and 5 programmatically. The bash version works on macOS/Linux/Git Bash; use safety-net.ps1 on native Windows PowerShell.",
+    "permissions": "The deny list hard-blocks edits to protected zones even if the hook fails. The ask list forces user confirmation for destructive commands.",
+    "subagents": "craft-specialist and perf-specialist are defined in .claude/agents/. Claude will delegate to them automatically based on user intent.",
+    "commands": "Slash commands /brain-scan, /craft-audit, /perf-audit are defined in .claude/commands/.",
+    "rules": "Path-scoped rules in .claude/rules/ load automatically when Claude reads matching files (src/**, lib/**, app/**)."
+  }
+}

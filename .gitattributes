@@ -1,0 +1,20 @@
+# Default: let git auto-detect + normalize
+* text=auto
+
+# Shell scripts must use LF so bash can execute them on any platform
+*.sh text eol=lf
+
+# PowerShell scripts: CRLF is fine on Windows; LF works too
+*.ps1 text eol=crlf
+
+# Markdown / text files: auto-detect
+*.md text
+*.json text
+*.yaml text
+*.yml text
+
+# No line conversion for binary-like files (future-proofing)
+*.png binary
+*.jpg binary
+*.gif binary
+*.ico binary
