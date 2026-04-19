@@ -1,0 +1,67 @@
+{
+  "name": "mdbrain",
+  "version": "0.3.0",
+  "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails against AI refactoring mistakes via hooks, tool-scoped subagents, and path-scoped rules.",
+  "type": "module",
+  "bin": {
+    "mdbrain": "./bin/mdbrain.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "CJ Kim",
+    "url": "https://github.com/chanjoongx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanjoongx/mdbrain.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chanjoongx/mdbrain/issues"
+  },
+  "homepage": "https://github.com/chanjoongx/mdbrain#readme",
+  "keywords": [
+    "claude-code",
+    "claude",
+    "anthropic",
+    "ai-agents",
+    "ai-coding",
+    "prompt-engineering",
+    "xml-protocols",
+    "false-positive-catalog",
+    "code-refactoring",
+    "ai-safety",
+    "hooks",
+    "subagents",
+    "llm-tools",
+    "developer-tools"
+  ],
+  "files": [
+    "bin/",
+    "lib/",
+    "agents/",
+    "commands/",
+    "hooks/",
+    ".claude/rules/",
+    ".claude/settings.example.json",
+    ".claude-plugin/",
+    "BRAIN.md",
+    "CRAFT.md",
+    "PERF.md",
+    "CLAUDE.template.md",
+    "ARCHITECTURE.md",
+    "BOOTSTRAP_GUIDE.md",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node bin/mdbrain.js --version"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

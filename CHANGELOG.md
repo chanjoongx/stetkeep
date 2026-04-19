@@ -6,6 +6,47 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.3.0] — 2026-04-19
+
+### Added — modern distribution
+
+- **npm package `mdbrain`** — one-command install via `npx mdbrain install` (no `git clone` required).
+  - ESM, Node 20+, zero runtime dependencies (stdlib only).
+  - `bin/mdbrain.js` CLI entry with `install`, `scan`, `--version`, `--help` subcommands.
+  - Published with `--provenance` (Sigstore-signed supply chain attestation).
+- **Claude Code plugin manifest** (`.claude-plugin/plugin.json`) — mdbrain is now a valid native Claude Code plugin.
+  - Ships `agents/`, `commands/`, `hooks/hooks.json` at plugin root per 2026 convention.
+  - Submittable to the official Claude Code plugin marketplace.
+- **Plugin marketplace manifest** (`.claude-plugin/marketplace.json`) — makes `github.com/chanjoongx/mdbrain` a self-hostable marketplace. Users can run `/plugin marketplace add chanjoongx/mdbrain` and discover `mdbrain` directly.
+
+### Changed — positioning reset after competitive research
+
+A three-agent research sweep on April 19 revealed that "mechanical guardrails via hooks" and "tool-scoped subagents" are **table-stakes in the April 2026 Claude Code ecosystem** (TDD-Guard, VoltAgent, wshobson, etc. already own those framings). We repositioned around the two genuinely differentiated pillars:
+
+- **XML-structured protocol framework** — BRAIN/CRAFT/PERF treat Claude's attention surface as addressable via XML tags. Nobody else is marketing this as a first-class primitive despite Anthropic's own docs recommending it.
+- **False-positive catalog** — the 16-entry registry of "patterns that look like anti-patterns but aren't" (config files, V8 JIT paths, framework idioms) is ecosystem-unique. No other project ships a curated FP catalog.
+
+README, BRAIN.md, and CHANGELOG now lead with these. Hook enforcement is supporting evidence, not headline.
+
+### Restructured — plugin-convention compliance
+
+- `.claude/agents/` → `agents/` (plugin root)
+- `.claude/commands/` → `commands/` (plugin root)
+- `.claude/hooks/` → `hooks/` (plugin root) + new `hooks/hooks.json` manifest
+- `.claude/rules/` and `.claude/settings.example.json` stay under `.claude/` (plugin spec cannot package path-scoped rules or settings; these remain as install templates only).
+
+### Deprecated
+
+- **`install.sh` / `install.ps1`** reduced to ~30-line thin wrappers that invoke `node bin/mdbrain.js install`. Same CLI flags as before, single source of truth. Recommended install path is now `npx mdbrain install`.
+
+### Fixed
+
+- Windows PowerShell em-dash (`—`) rendering corruption on CP949 / Korean locales (fallback to plain `-` through Node's UTF-8 stdout).
+- `-ExecutionPolicy Bypass` no longer required — npm entry point sidesteps PowerShell's script policy entirely.
+- `bash` invocation in PowerShell no longer routes to (missing) WSL — `npx mdbrain` works natively from any shell.
+
+---
+
 ## [0.2.1] — 2026-04-19 (post-review micro-fixes)
 
 ### Fixed — flagged in three-persona expert review
@@ -56,17 +97,3 @@ Semver: MAJOR.MINOR.PATCH.
 ## [0.1.0] — 2026-04-19 (internal only)
 
 Initial prompt-only protocol draft. Not publicly released.
-
-### Included
-- BRAIN.md (orchestrator concept)
-- CRAFT.md (20 anti-patterns + 10 principles)
-- PERF.md (20 perf anti-patterns + measurement-first)
-- Brain-region metaphor throughout
-- install.sh / install.ps1 (coexist / merge / fresh modes)
-
-### Known issues (fixed in 0.2.0)
-- All behavioral claims were prompt-level — no mechanical enforcement
-- Protocol claimed ~80% false-positive reduction with no methodology
-- Referenced nonexistent `.claude/rules/*.md` auto-load mechanism
-- State management / neuroplasticity sections encouraged hallucination
-- Token cost high (~15-18K on full load)

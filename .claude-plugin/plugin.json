@@ -1,0 +1,30 @@
+{
+  "name": "mdbrain",
+  "version": "0.3.0",
+  "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails (hooks + tool-scoped subagents) against AI refactoring mistakes.",
+  "author": {
+    "name": "CJ Kim",
+    "url": "https://github.com/chanjoongx"
+    },
+  "homepage": "https://github.com/chanjoongx/mdbrain",
+  "repository": "https://github.com/chanjoongx/mdbrain",
+  "license": "MIT",
+  "keywords": [
+    "claude-code",
+    "xml-protocols",
+    "false-positive-catalog",
+    "safety-net",
+    "hooks",
+    "subagents",
+    "code-refactoring",
+    "performance",
+    "ai-safety"
+  ],
+  "commands": [
+    "./commands/brain-scan.md",
+    "./commands/craft-audit.md",
+    "./commands/perf-audit.md"
+  ],
+  "agents": "./agents/",
+  "hooks": "./hooks/hooks.json"
+}

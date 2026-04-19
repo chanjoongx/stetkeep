@@ -1,0 +1,20 @@
+{
+  "name": "mdbrain-marketplace",
+  "owner": {
+    "name": "CJ Kim",
+    "url": "https://github.com/chanjoongx"
+  },
+  "metadata": {
+    "description": "mdbrain — XML protocol framework + false-positive catalog for Claude Code.",
+    "homepage": "https://github.com/chanjoongx/mdbrain"
+  },
+  "plugins": [
+    {
+      "name": "mdbrain",
+      "source": ".",
+      "description": "Mechanical guardrails against AI false-positive refactors. Hook-enforced Safety Net, tool-scoped subagents, XML-structured protocols, false-positive catalog.",
+      "version": "0.3.0",
+      "keywords": ["guardrails", "protocols", "code-quality", "performance"]
+    }
+  ]
+}

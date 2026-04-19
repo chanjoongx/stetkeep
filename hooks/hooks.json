@@ -1,0 +1,26 @@
+{
+  "$schema": "https://claude.com/schemas/hooks.json",
+  "_comment": "mdbrain plugin hook manifest. Safety Net runs on every Edit/Write/Bash.",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|Bash",
+        "hooks": [
+          {
+            "_platform": "bash (macOS/Linux/Git Bash)",
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/safety-net.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+
+  "_notes": {
+    "windows": "On native Windows PowerShell (no Git Bash), replace the command with: powershell -File ${CLAUDE_PLUGIN_ROOT}/hooks/safety-net.ps1",
+    "env": "CLAUDE_PLUGIN_ROOT is injected by Claude Code and points to the plugin's installed directory.",
+    "enforcement": "The hook blocks edits to paths in .craftignore/.perfignore, files marked with @craft-ignore or @perf-* annotations, and destructive Bash commands in legacy/, generated/, vendor/ paths."
+  }
+}

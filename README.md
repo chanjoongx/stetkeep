@@ -9,39 +9,82 @@
 ╚═╝     ╚═╝╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
 ```
 
-### *A native Claude Code extension with mechanical guardrails against false-positive refactors.*
+### *XML protocol framework + false-positive catalog for Claude Code.*
 
-**Hook-enforced Safety Net. Tool-scoped subagents. Path-scoped rules. Slash commands.**
-**Built on Claude Code's 2026 extension mechanisms — not prompt assertion.**
+**Stop Claude from "helpfully" refactoring your intentional code.**
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3500&pause=900&color=A78BFA&center=true&vCenter=true&width=760&lines=Hook-enforced+Safety+Net;Tool-scoped+subagents;Path-scoped+rules;False-positive+catalogs+that+actually+work)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3500&pause=900&color=A78BFA&center=true&vCenter=true&width=760&lines=XML-structured+protocols.+Not+prose+prompts.;16-entry+false-positive+catalog.;The+intentional-code+defense+layer.)](https://git.io/typing-svg)
 
+[![npm](https://img.shields.io/npm/v/mdbrain?color=CB3837&logo=npm)](https://www.npmjs.com/package/mdbrain)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
-[![Version](https://img.shields.io/badge/version-v0.2.1-5FE5D4)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.3.0-5FE5D4)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
 </div>
 
 ---
 
-## ⚡ 30-Second Pitch
+## ⚡ 30-second install
 
-Claude Code is powerful. It's also enthusiastic — it will happily "refactor" your intentional design choices into generic patterns, `useMemo` a component without measuring, or delete a `*.pb.ts` file it thinks is dead.
+```bash
+npx mdbrain install
+```
 
-**mdbrain adds mechanical guardrails on top of Claude Code's native 2026 extension APIs:**
+That's it. Run it in your project. It wires up the protocols, subagents, hooks, and slash commands. Next session of `claude`, type `/brain-scan` and you're working.
 
-- **PreToolUse hook** (out-of-process bash/PowerShell) blocks edits to `legacy/`, `@perf-hot-path`, `.craftignore`-matched paths — regardless of what the model decides
-- **Tool-scoped subagents** — `perf-specialist` physically cannot create new files (no Write in its allowlist)
-- **Path-scoped rules** auto-load CRAFT/PERF guidance only when Claude is editing code, not during doc work
-- **Permissions `deny` list** as a hard backstop
-- **False-positive catalog** of 16 cases the model commonly misjudges (1000-line config, deliberate inline loops, V8 JIT optimizations, etc.)
-
-Five layers of defense against the AI's over-eagerness. The first three are deterministic; the last two are prompting heuristics.
+Full walkthrough: [`BOOTSTRAP_GUIDE.md`](BOOTSTRAP_GUIDE.md).
 
 ---
 
-## 🧠 The Idea in One Picture
+## 🎯 What mdbrain actually is
+
+Two things other Claude Code projects don't ship:
+
+### 1. **XML-structured protocol framework**
+
+Prose prompts ("be careful when refactoring, prefer readability over cleverness...") don't survive 20K-token contexts. XML-tagged directives do. Anthropic's own prompting guide recommends XML. We built three protocols around it:
+
+- **BRAIN.md** — `<routing>` / `<mode>` / `<inhibit>` — decides where a command goes
+- **CRAFT.md** — `<anti_patterns>` / `<safety_net>` / `<false_positives>` — structural refactor discipline
+- **PERF.md** — `<pre_check>` / `<perf_budget>` / `<measurement_gate>` — measurement-first performance work
+
+Each is ~1.8K tokens. Claude's attention lands on XML-delimited sections more reliably than on Markdown prose headers.
+
+### 2. **False-positive catalog**
+
+The 16-entry registry of "patterns Claude will mistakenly flag as problems." Examples:
+
+| What Claude sees | What Claude will say | What it actually is |
+|---|---|---|
+| 1000-line `constants.js` | "God File (A1). Split it." | A data table. Splitting loses context. |
+| Deliberate inline `for` loop | "Duplication (A3). Extract." | Profiled hot path. 10× faster than `reduce`. |
+| Plain `<img>` element | "Use `next/image`." | Below-fold. Not the LCP element. |
+| `Array.map().map().map()` | "Collapse into `reduce`." | V8 optimizes this; readability wins. |
+
+When Claude matches one of these, the Safety Net flags it 🔴 Low confidence and asks before editing. Catalog is under `<false_positives>` in CRAFT.md and PERF.md.
+
+No competitor ships this.
+
+---
+
+## 🛡 Supporting layer — hook-enforced Safety Net
+
+On top of the XML framework, mdbrain ships a five-layer defense:
+
+- **Layer A** — `permissions.deny` hard-blocks edits to `legacy/`, `generated/`, `vendor/` (deterministic)
+- **Layer B** — PreToolUse hook runs out-of-process; returns `deny`/`ask`/`allow` JSON (deterministic)
+- **Layer C** — Subagent tool scoping — `craft-specialist` / `perf-specialist` can't `Write` new files (structural)
+- **Layer D** — Path-scoped rules auto-load CRAFT/PERF on `src/**` file access (heuristic)
+- **Layer E** — XML protocols + false-positive catalog (heuristic)
+
+Layers A / B / C fire regardless of model attention. Layers D / E bias behavior. Honest breakdown in [`ARCHITECTURE.md §1`](ARCHITECTURE.md).
+
+This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), [claude-guardrails](https://github.com/dwarvesf/claude-guardrails), and others already ship hook-based enforcement. mdbrain's wedge is the XML framework + FP catalog above; hooks are just the vehicle.
+
+---
+
+## 🧠 Architecture at a glance
 
 ```
                  ┌──────────────────────────┐
@@ -53,7 +96,7 @@ Five layers of defense against the AI's over-eagerness. The first three are dete
                ▼                           ▼
    ┌────────────────────┐    ┌──────────────────────┐
    │ Subagents          │    │ Path-scoped rules    │
-   │ .claude/agents/    │    │ .claude/rules/       │
+   │ agents/            │    │ .claude/rules/       │
    │ — tool-scoped      │    │ — auto-load on read  │
    └──────────┬─────────┘    └──────────┬───────────┘
               │                          │
@@ -64,10 +107,9 @@ Five layers of defense against the AI's over-eagerness. The first three are dete
                   └──────────┬───────────┘
                              │
                  ┌───────────▼────────────┐
-                 │ PreToolUse HOOK        │  ◀── Safety Net (mechanical)
-                 │ .claude/hooks/         │     runs out-of-process
-                 │ checks: ignore files,  │     can deny / ask / allow
-                 │ markers, protected dirs│
+                 │ PreToolUse HOOK        │  ◀── mechanical, out-of-process
+                 │ hooks/safety-net.sh    │     can deny / ask / allow
+                 │ + false-positive gate  │     XML-catalog-driven
                  └───────────┬────────────┘
                              │
                         allow│deny/ask
@@ -79,283 +121,229 @@ Five layers of defense against the AI's over-eagerness. The first three are dete
 
 ---
 
-## 📦 Requirements
+## 📦 Install
 
-- **Claude Code 2026** or later — this project uses the 2026 extension surface (hooks, subagents, path-scoped rules, slash commands). Older versions will fall back to prompt-level behavior only (Layer D/E); mechanical enforcement (Layers A/B/C) requires 2026+.
-- **Shell**:
-  - macOS / Linux: bash 4+ (default)
-  - Windows: Git Bash (bundled with Git for Windows — what most Claude Code Windows users already have), or native PowerShell 5.1+
-- **Optional**: `jq` — the hook uses it if present, falls back to grep-based JSON parsing if absent.
-
----
-
-## 🚀 Install
-
-### Clone + install
+### Option 1 — `npx` (recommended, no clone needed)
 
 ```bash
-# 1. Clone this repo anywhere
-git clone https://github.com/chanjoongx/mdbrain.git
-
-# 2. Run the installer from your project folder
 cd /path/to/your-project
+npx mdbrain install
+```
 
-# macOS / Linux / Git Bash
+Handles existing `CLAUDE.md` / `memory/` / other `.md` files non-destructively by default (coexist mode).
+
+Modes:
+- `--mode coexist` (default) — preserve everything, append 3-line bootstrap to CLAUDE.md
+- `--mode merge` — same + add a Protocols reference section
+- `--mode fresh` — empty-project install (requires `--force` if anything exists)
+- `--dry-run` — preview without writing
+
+### Option 2 — Claude Code plugin marketplace
+
+```
+# In Claude Code
+/plugin marketplace add chanjoongx/mdbrain
+/plugin install mdbrain
+```
+
+Auto-loads the subagents, commands, and hook — no file copying into your project. Downside: cannot install the path-scoped rules and root-level protocol MDs (those are user-level, not plugin-packagable).
+
+### Option 3 — clone + script (legacy)
+
+```bash
+git clone https://github.com/chanjoongx/mdbrain.git
+cd /path/to/your-project
 bash /path/to/mdbrain/install.sh
-
-# Windows PowerShell
-powershell -File C:\path\to\mdbrain\install.ps1
 ```
 
-### What the installer does
+The `install.sh` is now a thin wrapper over `node lib/install.js`. Use this if you want to hack on mdbrain itself.
 
-1. Copies `BRAIN.md`, `CRAFT.md`, `PERF.md` to your project root
-2. Copies `.claude/` directory (agents, hooks, rules, commands, settings.example.json)
-3. Creates `.craftignore` and `.perfignore` if missing
-4. Adds a bootstrap line to your existing `CLAUDE.md` (or creates one from template)
-5. Reminds you to `cp .claude/settings.example.json .claude/settings.json`
+### After install
 
-### Install modes
+```bash
+# One-time: activate the hook
+cp .claude/settings.example.json .claude/settings.json
 
-| Mode | When |
-|---|---|
-| `coexist` (default) | Existing project with `CLAUDE.md` / `memory/` — preserves everything |
-| `merge` | Appends a Protocol section to existing `CLAUDE.md` |
-| `fresh` | Empty project |
+# Launch Claude Code
+claude
 
-Run `bash install.sh --dry-run` to simulate without changes.
-
----
-
-## 📋 After Install — First Command
-
-```
+# Type this inside Claude Code:
 /brain-scan
 ```
 
-That's it. `/brain-scan` is a slash command defined in `.claude/commands/brain-scan.md` — it reads `BRAIN.md`, classifies every MD file, reports the ecosystem map, and suggests next steps.
+---
 
-Natural language afterward:
-```
-"clean up src/components/"    →  delegates to craft-specialist
-"make this faster"            →  delegates to perf-specialist (with measurement gate)
-"full project checkup"        →  brain-router sequences both
-```
+## 📦 Requirements
 
-The Safety Net hook is active from the moment you type — regardless of what you say.
+- **Claude Code 2026+** (hooks, subagents, path-scoped rules, slash commands all require this)
+- **Node 20+** (bundled with Claude Code — you have it)
+- **bash** on macOS/Linux; **Git Bash or PowerShell** on Windows
+- **jq** (optional — hook falls back to grep if absent)
 
 ---
 
-## 🛡 The Safety Net — What Makes It Different
+## ⚖ vs. the 2026 ecosystem
 
-Most AI coding tools have rules. mdbrain has **enforcement**:
+Honest comparison, based on [competitive research](https://github.com/chanjoongx/mdbrain/blob/main/CHANGELOG.md#030):
 
-### Deterministic layers (always fire)
+| | **mdbrain** | [TDD-Guard](https://github.com/nizos/tdd-guard) | [claude-guardrails](https://github.com/dwarvesf/claude-guardrails) | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
+|---|---|---|---|---|---|
+| **Scope** | XML protocols + FP catalog | TDD-specific blocking | Security permissions | Subagent library | Kitchen-sink toolkit |
+| **Stars (Apr 2026)** | v0.3.0 launch | 2K | 12 | 17.7K | 160K |
+| **Hook enforcement** | ✅ | ✅ | ✅ | ❌ | ✅ |
+| **Tool-scoped subagents** | ✅ | ❌ | ❌ | ✅ | ✅ |
+| **XML-structured protocols** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **False-positive catalog** | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **Plugin marketplace** | ✅ | ✅ | ❌ | ✅ | ✅ |
+| **npm package** | ✅ | ✅ | ✅ | ❌ | ✅ |
 
-**Permissions deny list** (`.claude/settings.json`):
-```json
-"deny": [
-  "Edit(legacy/**)",
-  "Edit(generated/**)",
-  "Edit(vendor/**)",
-  "Edit(.env*)"
-]
-```
-Claude Code blocks these before any tool call. No model involvement.
+If you want **TDD-specific blocking** → TDD-Guard. If you want **security policy as code** → claude-guardrails. If you want **an agent library** → VoltAgent. If you want **everything at once** → everything-claude-code.
 
-**PreToolUse hook** (`.claude/hooks/safety-net.sh`):
-```bash
-# Runs on every Edit/Write/Bash. Returns JSON: allow/ask/deny.
-# Checks: .craftignore patterns, @craft-ignore / @perf-optimized markers,
-# protected paths, destructive Bash commands in sensitive dirs.
-```
-Runs in a separate process. Hook's decision is final.
-
-**Subagent tool scoping** (`.claude/agents/perf-specialist.md`):
-```yaml
-tools: Read, Grep, Glob, Bash, Edit     # note: NO Write
-```
-perf-specialist physically cannot create new files. Not a rule — a missing capability.
-
-### Heuristic layers (bias behavior)
-
-- **Path-scoped rules** auto-load CRAFT/PERF guidance on `src/**` access
-- **Confidence grading** (🟢 / 🟡 / 🔴) biases toward caution
-- **False-positive catalog** — 16 cases the model commonly misjudges
+If you want **a protocol framework with a curated false-positive registry**, that's us.
 
 ---
 
-## 🎯 Verify It Works
-
-After install:
+## 🎯 Verify it works
 
 ```bash
-# 1. Hook runs and returns deny
+# 1. Hook runs and returns decisions
 echo '{"tool_name":"Edit","tool_input":{"file_path":"legacy/x.ts"}}' \
   | bash .claude/hooks/safety-net.sh
 
-# Expected output (JSON):
+# Expected (JSON):
 # {"hookSpecificOutput":{"permissionDecision":"ask", ...}}
 
-# 2. Subagents discovered
+# 2. Subagents discoverable
 ls .claude/agents/
-# craft-specialist.md  perf-specialist.md  brain-router.md
+# brain-router.md  craft-specialist.md  perf-specialist.md
 
-# 3. Commands registered (after restarting claude)
-# In Claude Code CLI, type `/` and you should see /brain-scan, /craft-audit, /perf-audit
+# 3. Slash commands (after restarting claude)
+# In Claude Code, type `/` — you should see /brain-scan, /craft-audit, /perf-audit
+
+# 4. Quick diagnostic
+npx mdbrain scan
 ```
-
-If any of these fail, the corresponding enforcement layer is not active.
 
 ---
 
 ## 🔧 Troubleshooting
 
+### Windows PowerShell execution policy blocks install.ps1
+Use `npx mdbrain install` instead (npm bypasses the .ps1 policy entirely). Or:
+```powershell
+powershell -ExecutionPolicy Bypass -File install.ps1
+```
+
+### PowerShell renders em-dashes (`—`) as `??`
+Cosmetic only on Korean / CP949 consoles. Run `chcp 65001` first, or just ignore — the install is correct.
+
+### `bash` in PowerShell tries to invoke WSL
+That's Windows's built-in `bash.exe` (WSL proxy), not Git Bash. Use `npx mdbrain install` (no bash dependency) or open Git Bash directly from the Start menu.
+
 ### Hook doesn't seem to do anything
-Run the test invocation from "Verify It Works". If it returns no JSON:
-- On macOS/Linux: check `bash .claude/hooks/safety-net.sh` is executable (`chmod +x`)
-- On Windows: verify Git Bash is installed, or switch to the PowerShell hook (see below)
-- If output shows but decisions are wrong: confirm `.craftignore` / `.perfignore` patterns match your project layout
+Verify the hook returns JSON:
+```bash
+echo '{"tool_name":"Edit","tool_input":{"file_path":"legacy/x.ts"}}' | bash .claude/hooks/safety-net.sh
+```
+If no output: make sure `.claude/settings.json` exists (copy from `settings.example.json`) and the hook is wired under `hooks.PreToolUse`.
 
-### Windows native PowerShell (no Git Bash)
-The shipped `.claude/settings.example.json` uses a bash hook by default. For pure PowerShell:
-1. Copy `settings.example.json` → `settings.json`
-2. Change the hook `command` to:
-   ```json
-   "command": "powershell -File $CLAUDE_PROJECT_DIR/.claude/hooks/safety-net.ps1"
-   ```
-3. Use `validators/validate-protocol.ps1` (we ship both `.sh` and `.ps1` validators).
-
-### Slash commands not appearing (`/brain-scan` unknown)
-Claude Code scans `.claude/commands/` at session start. If you added files mid-session, quit and restart `claude`. Commands also require Claude Code 2026+.
-
-### Subagents not being delegated to
-Claude decides delegation based on the subagent's `description` field. Make your user command match the description vocabulary ("refactor", "optimize", "audit"). You can also invoke explicitly with `@craft-specialist ...`.
-
-### Hooks fail silently (fail-open behavior)
-By design, a broken hook doesn't block Claude (fail-open for usability). This means a hook bug can silently disable the Safety Net. Run the test in "Verify It Works" after any edit to hook files.
-
-### I installed but `/brain-scan` does nothing
-Check: (a) Claude Code version 2026+, (b) `.claude/commands/brain-scan.md` exists, (c) you ran `claude` AFTER installing (session needs restart to pick up new commands).
+### `/brain-scan` not recognized
+Claude Code 2026+ required. Older versions don't scan `.claude/commands/`. Check with `claude --version`.
 
 ---
 
-## ⚖ vs. Alternatives
+## 📁 Repo layout
 
-| | **mdbrain** | `.cursorrules` | Plain CLAUDE.md | Custom prompts |
-|---|---|---|---|---|
-| Hook-enforced Safety Net | ✅ Mechanical | ❌ | ❌ | ❌ |
-| Tool-scoped subagents | ✅ Native 2026 API | ❌ | ❌ | ❌ |
-| Path-scoped rules | ✅ Auto-load on file access | ❌ | ❌ | ❌ |
-| Permissions deny list | ✅ Deterministic | ❌ | ❌ | ❌ |
-| False-positive catalog | ✅ 16 cases | ⚠ project-specific | ⚠ mentions | ⚠ |
-| Coexist-with-existing | ✅ 3 install modes | N/A | N/A | N/A |
-| Token cost (full load) | ~7-9K | ~1-2K | 1-5K | varies |
-
-mdbrain is heavier than `.cursorrules` but the weight buys mechanical enforcement. For single-file solo projects, `.cursorrules` is probably enough. For multi-file projects with legacy zones, generated code, or measured performance requirements, the guardrails matter.
+```
+mdbrain/
+├── agents/                      # plugin subagents (Claude Code marketplace compatible)
+├── commands/                    # plugin slash commands
+├── hooks/
+│   ├── hooks.json               # plugin hook manifest
+│   ├── safety-net.sh            # PreToolUse (bash)
+│   └── safety-net.ps1           # PreToolUse (PowerShell)
+├── .claude/
+│   ├── rules/                   # path-scoped rules (user-level, not plugin-packagable)
+│   └── settings.example.json    # hook wiring template
+├── .claude-plugin/
+│   ├── plugin.json              # Claude Code plugin manifest
+│   └── marketplace.json         # self-hosted marketplace entry
+├── bin/mdbrain.js               # npm CLI entry (ESM, Node 20+, stdlib only)
+├── lib/
+│   ├── install.js               # cross-platform installer
+│   ├── scan.js                  # ecosystem diagnostic
+│   └── utils.js                 # log helpers
+├── BRAIN.md                     # routing protocol
+├── CRAFT.md                     # refactor protocol + FP catalog
+├── PERF.md                      # performance protocol + FP catalog
+├── ARCHITECTURE.md              # honest enforcement breakdown
+├── BOOTSTRAP_GUIDE.md           # first-session walkthrough
+├── benchmark/SPEC.md            # evaluation methodology
+├── validators/                  # installation verification (.sh + .ps1)
+├── install.sh / install.ps1     # thin wrappers over lib/install.js
+├── package.json
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── LICENSE
+```
 
 ---
 
 ## 🧪 Benchmark
 
-The classic open-source "our tool improves X by N%" claim is unfalsifiable without a benchmark. Rather than ship a number we can't defend, we published the **evaluation methodology first**:
+We publish a pre-registered evaluation spec instead of hand-wavy numbers:
 
-📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — full spec:
-- **50 test cases**: 40% true anti-patterns, 40% false-positive lookalikes (adversarial), 20% ambiguous
-- **3 conditions**: vanilla Claude Code / mdbrain full / mdbrain Safety-Net-only
-- **Metrics**: precision, recall, F1, harm score (0-3 severity), consultation rate
-- **Protocol**: human rubric grading (2 blinded + tiebreaker), Cohen's κ ≥ 0.75, paired bootstrap statistics
-- **Cost**: ~$18-25 per full 3-condition run at Opus 4.7 April 2026 rates
+📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — 50 test cases, 3 conditions (vanilla / mdbrain full / mdbrain Safety-Net-only), human rubric grading (Cohen's κ ≥ 0.75), paired bootstrap statistics, `~$18–25` per full run on Opus 4.7 (April 2026 pricing).
 
-First run pending. Results will be published with full methodology, data, and reproducibility instructions.
-
----
-
-## 📚 Files
-
-```
-mdbrain/
-├── README.md                      ← you are here
-├── BRAIN.md                       ← orchestration logic
-├── CRAFT.md                       ← 20 anti-patterns + safety net (XML-structured)
-├── PERF.md                        ← 20 perf anti-patterns + measurement discipline
-├── ARCHITECTURE.md                ← how it actually works (honest)
-├── BOOTSTRAP_GUIDE.md             ← first-session walkthrough
-├── CLAUDE.template.md             ← project memory template
-│
-├── .claude/
-│   ├── settings.example.json      ← hook wiring + permissions
-│   ├── agents/
-│   │   ├── brain-router.md        ← orchestrator subagent
-│   │   ├── craft-specialist.md    ← refactor subagent (no Write tool)
-│   │   └── perf-specialist.md     ← perf subagent (no Write tool)
-│   ├── hooks/
-│   │   ├── safety-net.sh          ← PreToolUse hook (bash)
-│   │   └── safety-net.ps1         ← PreToolUse hook (PowerShell)
-│   ├── rules/
-│   │   ├── craft-rules.md         ← path-scoped: src/**/*.{ts,tsx,js,jsx}
-│   │   └── perf-rules.md          ← path-scoped: src/**, config files
-│   └── commands/
-│       ├── brain-scan.md          ← /brain-scan
-│       ├── craft-audit.md         ← /craft-audit
-│       └── perf-audit.md          ← /perf-audit
-│
-├── benchmark/
-│   └── SPEC.md                    ← eval methodology (v1)
-│
-├── install.sh / install.ps1
-├── LICENSE (MIT)
-├── CHANGELOG.md
-└── CONTRIBUTING.md
-```
+Results pending. We'll publish data + methodology, not a single percentage.
 
 ---
 
 ## ❓ FAQ
 
 ### Does the Safety Net actually work, or is it prompting theater?
+Layers A (permissions) and B (hook) are out-of-process and deterministic — they block edits before the tool fires, regardless of what Claude decided. Layer C (subagent tool scoping) is enforced at spawn — the tool simply isn't available. Layers D (path-scoped rules) and E (XML protocols + FP catalog) are heuristic — they bias the model but cannot guarantee behavior. Full breakdown in [ARCHITECTURE.md §1](ARCHITECTURE.md).
 
-Layers A (permissions) and B (hook) are out-of-process and deterministic. They work regardless of model behavior. Layer C (subagent tool scoping) is enforced at subagent spawn — the tool isn't available, period. Layers D (path-scoped rules) and E (prompt-level directives) are heuristic — they bias the model but cannot guarantee behavior.
+### Does this work with Cursor / Codex / OpenCode?
+The XML protocols and false-positive catalog are plain Markdown — any AI that reads MD can use them. But the hook system, subagent tool scoping, and path-scoped rules are Claude Code 2026 features. Without them you lose the deterministic layers.
 
-See [`ARCHITECTURE.md`](ARCHITECTURE.md) §1 for the full layer-by-layer breakdown.
-
-### Does this work with Cursor / Copilot?
-
-Partially. `CRAFT.md` and `PERF.md` content is plain Markdown — any AI can read them. But the hook system, subagent tool scoping, and path-scoped rules are Claude Code 2026 features. Without them, you lose the deterministic layers.
-
-### What's the brain metaphor for?
-
-It's a mnemonic. "BRAIN routes, CRAFT refactors, PERF measures" is memorable. It's not a claim about cognition. The MD files are documents read by a language model.
+### Why the brain metaphor?
+It's a mnemonic — "BRAIN routes, CRAFT refactors, PERF measures" — not a cognitive claim. MD files are documents read by a language model. See [ARCHITECTURE.md §8](ARCHITECTURE.md).
 
 ### Does it work with existing `CLAUDE.md` and `memory/`?
+Yes. `coexist` mode (default) preserves everything — only appends a 3-line bootstrap reference to your CLAUDE.md. The `memory/` folder is detected and left untouched.
 
-Yes. Install defaults to `coexist` mode — nothing existing is modified except appending a 3-line protocol bootstrap to your `CLAUDE.md`. The `memory/` folder is acknowledged as-is.
+### npm install vs plugin marketplace?
+- **npm install**: gets you **everything** — the root protocols (BRAIN.md / CRAFT.md / PERF.md), path-scoped rules, settings template, plus the plugin components.
+- **Plugin marketplace**: gets you **only the plugin components** — subagents, slash commands, hook. Path-scoped rules and root-level protocols can't be packaged as a plugin, so they stay user-level.
 
-### Built with AI help?
+For full mdbrain behavior, use npm install. For lightweight subagent access, plugin install is enough.
 
-Yes. Designed by [CJ Kim](https://github.com/chanjoongkim) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing mdbrain is built to prevent.
+### Built with AI?
+Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing mdbrain is built to prevent.
 
 ---
 
 ## 🗺 Roadmap
 
-- [x] **v0.1** — BRAIN / CRAFT / PERF / Safety Net (prompt-level)
-- [x] **v0.2** — Native Claude Code mechanisms (hooks, subagents, path-scoped rules, commands), compressed protocols, benchmark spec
-- [ ] **v0.3** — Run the benchmark; publish results
-- [ ] **v0.4** — Per-language variants (CRAFT.python.md, CRAFT.rust.md)
-- [ ] **v0.5** — `routines/DEPLOY.md`, `routines/TEST.md` templates
-- [ ] **v1.0** — Stable API, npm package `mdbrain`
+- [x] **v0.1** — protocol-only draft
+- [x] **v0.2** — Claude Code 2026 native mechanisms (hooks, subagents, path-scoped rules)
+- [x] **v0.3** — **npm package + plugin manifest + ecosystem repositioning**
+- [ ] **v0.4** — Claude Code marketplace submission; `npx mdbrain init` interactive
+- [ ] **v0.5** — per-language variants (`CRAFT.python.md`, `CRAFT.rust.md`)
+- [ ] **v0.6** — run the benchmark, publish results
+- [ ] **v1.0** — stable API, typed plugin configs
 
 ---
 
 ## 🤝 Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Especially valuable:
+See [CONTRIBUTING.md](CONTRIBUTING.md). Highest-value contributions:
 
-- New false-positive entries (with minimal reproducers)
-- New anti-pattern entries (A21+, P21+)
-- Hook improvements (edge cases, better path matching)
-- Language/stack-specific rules
+- **New false-positive entries** — patterns Claude commonly mis-flags (with a minimal reproducer)
+- **New anti-pattern entries** (A21+, P21+) — with corresponding FP counterexamples
+- **Hook improvements** — edge cases, better path matching, platform fixes
+- **Benchmark corpus cases** — see [benchmark/SPEC.md §3](benchmark/SPEC.md)
 
 ---
 
@@ -367,8 +355,8 @@ MIT. Use it, fork it, ship it.
 
 <div align="center">
 
-**Built by [CJ Kim](https://github.com/chanjoongkim) · Stress-tested with Claude · Published 2026-04-19**
+**Built by [CJ Kim](https://github.com/chanjoongx) · Stress-tested with Claude · Published 2026-04-19**
 
-*The model is eager. The Safety Net is skeptical. Together they ship.*
+*The model is eager. The Safety Net is skeptical. The XML protocol is structured.*
 
 </div>
