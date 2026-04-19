@@ -4,8 +4,9 @@
   "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails (hooks + tool-scoped subagents) against AI refactoring mistakes.",
   "author": {
     "name": "CJ Kim",
+    "email": "cj@chanjoongx.com",
     "url": "https://github.com/chanjoongx"
-    },
+  },
   "homepage": "https://github.com/chanjoongx/mdbrain",
   "repository": "https://github.com/chanjoongx/mdbrain",
   "license": "MIT",
