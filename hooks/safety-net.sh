@@ -135,8 +135,8 @@ done
 
 if [ -f "$FILE_PATH" ]; then
     FIRST_20=$(head -n 20 "$FILE_PATH" 2>/dev/null || echo "")
-    if echo "$FIRST_20" | grep -qE "@craft-ignore|@perf-optimized|@perf-hot-path|@perf-measured"; then
-        MARKER=$(echo "$FIRST_20" | grep -oE "@(craft|perf)-[a-z-]+" | head -1)
+    if echo "$FIRST_20" | grep -qE "@(craft|perf)-[a-z-]+[[:space:]]+(reason|baseline|date)="; then
+        MARKER=$(echo "$FIRST_20" | grep -oE "@(craft|perf)-[a-z-]+[[:space:]]+(reason|baseline|date)=" | head -1 | grep -oE "@(craft|perf)-[a-z-]+")
         block "$REL_PATH has a $MARKER marker. Safety Net refusal — edit would regress intentional craft/performance decision."
     fi
 fi

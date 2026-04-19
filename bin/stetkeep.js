@@ -51,7 +51,7 @@ if (command === '--version' || command === '-v') {
 
 if (command === '--help' || command === '-h' || !command) {
   console.log(HELP);
-  process.exit(command ? 0 : 1);
+  process.exit(0);
 }
 
 // Parse remaining args for the subcommand

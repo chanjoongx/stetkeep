@@ -1,5 +1,6 @@
 ---
 description: Scan the codebase for anti-patterns per CRAFT.md (read-only, no edits)
+argument-hint: "[path]"
 ---
 
 Read `CRAFT.md` from the project root. Then delegate to the `craft-specialist` subagent with the following brief:

@@ -1,5 +1,6 @@
 ---
 description: Baseline measurements + Top 5 bottlenecks per PERF.md (measurement-only, no edits)
+argument-hint: "[scope]"
 ---
 
 Read `PERF.md` from the project root. Then delegate to the `perf-specialist` subagent with the following brief:

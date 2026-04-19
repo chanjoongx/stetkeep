@@ -12,8 +12,8 @@
 
 $ErrorActionPreference = "Stop"
 
-$Input = [Console]::In.ReadToEnd()
-$Payload = $Input | ConvertFrom-Json
+$Stdin = [Console]::In.ReadToEnd()
+$Payload = $Stdin | ConvertFrom-Json
 
 $ToolName = $Payload.tool_name
 $FilePath = if ($Payload.tool_input.file_path) { $Payload.tool_input.file_path } else { $Payload.tool_input.path }
@@ -33,13 +33,23 @@ function Send-Decision {
     exit 0
 }
 
-# Destructive Bash in protected zones
+# Destructive or write-via-Bash in protected zones
+# Catches `rm -rf legacy/` and `cat > legacy/foo.ts` (Bash-based bypass of subagent Write restrictions).
 if ($ToolName -eq "Bash" -and $BashCmd) {
+    # Destructive
     if ($BashCmd -match "(rm -rf|rm -fr|git clean -fd)") {
         if ($BashCmd -match "(legacy/|generated/|vendor/|\.craftignore|\.perfignore)") {
             Send-Decision "deny" "Destructive command targets a protected zone. Safety Net refusal."
         }
         Send-Decision "ask" "Destructive command detected. Confirm intent."
+    }
+    # Write-via-Bash bypass: `>`, `>>` redirect to protected path
+    if ($BashCmd -match '>\s*["'']?(legacy|generated|vendor|node_modules|dist|build|\.next)/') {
+        Send-Decision "deny" "Bash redirection targets a protected zone. Use Edit/Write tool (which is gated)."
+    }
+    # `tee` bypass
+    if ($BashCmd -match 'tee\s+["'']?(legacy|generated|vendor)/') {
+        Send-Decision "deny" "Bash tee targets a protected zone. Safety Net refusal."
     }
     exit 0
 }
@@ -74,11 +84,13 @@ foreach ($ignoreFile in @(".craftignore", ".perfignore")) {
 }
 
 # Markers in existing file
+# Real markers always carry reason= / baseline= / date= (per CRAFT.md / PERF.md spec).
+# Bare prose mentions like "use @perf-optimized markers" do not match.
 if (Test-Path $FilePath) {
     $first20 = Get-Content $FilePath -TotalCount 20 -ErrorAction SilentlyContinue
     $joined = $first20 -join "`n"
-    if ($joined -match "@(craft-ignore|perf-optimized|perf-hot-path|perf-measured)") {
-        $marker = $Matches[0]
+    if ($joined -match '@(craft|perf)-[a-z-]+\s+(reason|baseline|date)=') {
+        $marker = [regex]::Match($joined, '@(craft|perf)-[a-z-]+').Value
         Send-Decision "deny" "$RelPath has a $marker marker. Safety Net refusal."
     }
 }

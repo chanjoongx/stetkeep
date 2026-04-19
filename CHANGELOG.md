@@ -8,6 +8,47 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.1] — 2026-04-20
+
+### Fixed — npm registry README freshness + bug fixes + platform parity
+
+v0.4.0 was published to npm with the original `MDBRAIN` ASCII header baked into the tarball README. npm pins the README at publish time, so GitHub-side updates do not propagate. This patch republishes with the refreshed README plus a batch of genuine bug fixes, platform-parity items, and UX improvements uncovered during a post-launch 4-person audit.
+
+Bug fixes (blockers)
+
+- `bin/stetkeep.js`: `stetkeep` with no arguments now exits 0 (was 1). GNU convention; matches `stetkeep --help` behavior.
+- `lib/install.js`: bootstrap detection regex now matches `mdbrain` and `claude-brain` legacy references, preventing duplicate bootstrap appends when v0.3.0 users upgrade.
+
+Platform parity
+
+- `hooks/safety-net.ps1`: Bash-via-PowerShell redirect (`>`) and `tee` bypass checks ported from `.sh` (was: `cat > legacy/foo.ts` would bypass the Safety Net on Windows only).
+- `hooks/safety-net.ps1`: `$Input` automatic-variable conflict renamed to `$Stdin` (prevents silent enumerator shadowing on PowerShell 5.1+).
+- `hooks/safety-net.sh` + `.ps1`: marker detection refined to require `reason=` / `baseline=` / `date=` field alongside `@craft-*` / `@perf-*` tokens. Bare prose mentions of marker names (docs describing the markers) no longer false-positive block the file. Real markers always carry one of those fields per CRAFT.md / PERF.md spec.
+
+UX / content
+
+- `commands/brain-scan.md`, `craft-audit.md`, `perf-audit.md`: `argument-hint` frontmatter added so the slash-command picker UI shows expected argument shape.
+- `commands/brain-scan.md`: body now substitutes `$ARGUMENTS` (was documented in trailing note but dropped from prompt body).
+- `agents/brain-router.md`: description now leads with "Use PROACTIVELY for ambiguous or compound code-quality requests" so auto-delegation triggers reliably on compound asks.
+- `agents/craft-specialist.md`: description replaces weak "make this artistic" trigger with concrete keywords (refactor, cleanup, anti-pattern removal, readability, dead-code removal).
+
+Metadata consistency
+
+- `package.json` and `plugin.json` descriptions unified (previously drifted in word choice).
+- `package.json` `files`: `CONTRIBUTING.md` added so the README "PRs Welcome" badge link resolves on the npm package page.
+
+Docs
+
+- README: `STETKEEP` ANSI Shadow header (was `MDBRAIN`), version badge v0.4.0 → v0.4.1, FAQ "Why the name stetkeep?" entry added, footer reflects rename date.
+- CHANGELOG v0.4.0 in-tarball metadata refreshed: removes the `stet` npm proxy mention that was blocked by npm typosquatting policy and published in the v0.4.0 tarball accidentally.
+
+Migration
+
+- No user action required. `npm install -g stetkeep` automatically upgrades 0.4.0 → 0.4.1.
+- CLI behavior unchanged except `stetkeep` bare-invocation exit code (1 → 0).
+
+---
+
 ## [0.4.0] — 2026-04-20
 
 ### Changed — project renamed from mdbrain to stetkeep

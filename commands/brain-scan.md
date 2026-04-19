@@ -1,8 +1,9 @@
 ---
 description: Map the project's MD ecosystem and propose next steps
+argument-hint: "[scope-path]"
 ---
 
-Read `BRAIN.md` and `CLAUDE.md` from the project root. Then scan all Markdown files under the root and `docs/` (max depth 3) and classify each as:
+Read `BRAIN.md` and `CLAUDE.md` from the project root. Then scan all Markdown files under $ARGUMENTS (default: the root and `docs/`, max depth 3) and classify each as:
 
 - **Protocol**: BRAIN.md, CRAFT.md, PERF.md
 - **Memory**: CLAUDE.md + anything under `memory/`
