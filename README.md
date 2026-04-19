@@ -15,7 +15,7 @@
 
 [![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3500&pause=900&color=A78BFA&center=true&vCenter=true&width=760&lines=XML-structured+protocols.+Not+prose+prompts.;16-entry+false-positive+catalog.;The+intentional-code+defense+layer.)](https://git.io/typing-svg)
 
-[![npm](https://img.shields.io/npm/v/mdbrain?color=CB3837&logo=npm)](https://www.npmjs.com/package/mdbrain)
+[![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
 [![Version](https://img.shields.io/badge/version-v0.3.0-5FE5D4)](CHANGELOG.md)
@@ -28,22 +28,24 @@
 ## ⚡ 30-second install
 
 ```bash
-npx mdbrain install
+npx stetkeep install
 ```
 
-That's it. Run it in your project. It wires up the protocols, subagents, hooks, and slash commands. Next session of `claude`, type `/brain-scan` and you're working.
+This is the one-command minimal install: protocols, subagents, slash commands, path-scoped rules. Next session of `claude`, type `/brain-scan` and you're working.
+
+For full mechanical enforcement (hooks + permissions deny-lists), the **Install** section below has a two-step recommended flow: one extra `cp` command.
 
 Full walkthrough: [`BOOTSTRAP_GUIDE.md`](BOOTSTRAP_GUIDE.md).
 
 ---
 
-## 🎯 What mdbrain actually is
+## 🎯 What stetkeep actually is
 
 Two things other Claude Code projects don't ship:
 
 ### 1. **XML-structured protocol framework**
 
-Prose prompts ("be careful when refactoring, prefer readability over cleverness...") don't survive 20K-token contexts. XML-tagged directives do. Anthropic's own prompting guide recommends XML. We built three protocols around it:
+Prose prompts ("be careful when refactoring, prefer readability over cleverness...") don't survive 20K-token contexts. XML-tagged directives do. [Anthropic's own prompting guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags) recommends XML tags explicitly as a way for Claude to parse prompts more accurately. We built three protocols around it:
 
 - **BRAIN.md** — `<routing>` / `<mode>` / `<inhibit>` — decides where a command goes
 - **CRAFT.md** — `<anti_patterns>` / `<safety_net>` / `<false_positives>` — structural refactor discipline
@@ -70,7 +72,7 @@ No competitor ships this.
 
 ## 🛡 Supporting layer — hook-enforced Safety Net
 
-On top of the XML framework, mdbrain ships a five-layer defense:
+On top of the XML framework, stetkeep ships a five-layer defense:
 
 - **Layer A** — `permissions.deny` hard-blocks edits to `legacy/`, `generated/`, `vendor/` (deterministic)
 - **Layer B** — PreToolUse hook runs out-of-process; returns `deny`/`ask`/`allow` JSON (deterministic)
@@ -80,7 +82,7 @@ On top of the XML framework, mdbrain ships a five-layer defense:
 
 Layers A / B / C fire regardless of model attention. Layers D / E bias behavior. Honest breakdown in [`ARCHITECTURE.md §1`](ARCHITECTURE.md).
 
-This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), [claude-guardrails](https://github.com/dwarvesf/claude-guardrails), and others already ship hook-based enforcement. mdbrain's wedge is the XML framework + FP catalog above; hooks are just the vehicle.
+This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), [claude-guardrails](https://github.com/dwarvesf/claude-guardrails), and others already ship hook-based enforcement. stetkeep's wedge is the XML framework + FP catalog above; hooks are just the vehicle.
 
 ---
 
@@ -123,53 +125,69 @@ This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), 
 
 ## 📦 Install
 
-### Option 1 — `npx` (recommended, no clone needed)
+### Quickstart (1 step, minimal)
 
 ```bash
 cd /path/to/your-project
-npx mdbrain install
+npx stetkeep install
 ```
 
-Handles existing `CLAUDE.md` / `memory/` / other `.md` files non-destructively by default (coexist mode).
+Gets you the XML protocols, subagents, slash commands, and path-scoped rules (Layers C/D/E). Enforcement is prompt-level only: the model biases toward the Safety Net but cannot be mechanically blocked.
 
-Modes:
-- `--mode coexist` (default) — preserve everything, append 3-line bootstrap to CLAUDE.md
-- `--mode merge` — same + add a Protocols reference section
-- `--mode fresh` — empty-project install (requires `--force` if anything exists)
-- `--dry-run` — preview without writing
+### Recommended (2 steps, full mechanical enforcement)
 
-### Option 2 — Claude Code plugin marketplace
+After `npx stetkeep install`:
+
+```bash
+cp .claude/settings.example.json .claude/settings.json
+```
+
+> **If you already have `.claude/settings.json`** (from other tooling or a previous install): `cp` will overwrite it. Run `ls .claude/settings.json` first; if it exists, merge the `permissions` and `hooks.PreToolUse` blocks from `settings.example.json` manually instead of overwriting.
+
+This wires up the remaining two layers:
+
+- **Layer A** (permissions deny-list): hard-blocks edits to `legacy/`, `generated/`, `vendor/`
+- **Layer B** (PreToolUse hook): out-of-process Safety Net enforcement on every Edit / Write / Bash
+
+Without this step, `legacy/` protection is a prompt suggestion rather than a deterministic block. You keep the same protection surface the project was designed around by completing it.
+
+### Then launch
+
+```bash
+claude
+```
+
+Inside Claude Code:
+```
+/brain-scan
+```
+
+### `npx stetkeep install` modes
+
+- `--mode coexist` (default): preserve everything, append 3-line bootstrap to CLAUDE.md
+- `--mode merge`: same + add a Protocols reference section
+- `--mode fresh`: empty-project install (requires `--force` if anything exists)
+- `--dry-run`: preview without writing
+
+### Alternative: Claude Code plugin marketplace
 
 ```
 # In Claude Code
-/plugin marketplace add chanjoongx/mdbrain
-/plugin install mdbrain
+/plugin marketplace add chanjoongx/stetkeep
+/plugin install stetkeep
 ```
 
-Auto-loads the subagents, commands, and hook — no file copying into your project. Downside: cannot install the path-scoped rules and root-level protocol MDs (those are user-level, not plugin-packagable).
+Auto-loads subagents, commands, and the hook with no file copying into your project. Tradeoff: path-scoped rules (Layer D) and root-level protocol MDs cannot be packaged by the plugin spec, so they stay user-level. For the full experience use `npx stetkeep install`.
 
-### Option 3 — clone + script (legacy)
+### Alternative: clone + script (for hacking on stetkeep)
 
 ```bash
-git clone https://github.com/chanjoongx/mdbrain.git
+git clone https://github.com/chanjoongx/stetkeep.git
 cd /path/to/your-project
-bash /path/to/mdbrain/install.sh
+bash /path/to/stetkeep/install.sh
 ```
 
-The `install.sh` is now a thin wrapper over `node lib/install.js`. Use this if you want to hack on mdbrain itself.
-
-### After install
-
-```bash
-# One-time: activate the hook
-cp .claude/settings.example.json .claude/settings.json
-
-# Launch Claude Code
-claude
-
-# Type this inside Claude Code:
-/brain-scan
-```
+The `install.sh` is a thin wrapper over `node lib/install.js`. Use this only if you are modifying stetkeep itself.
 
 ---
 
@@ -177,16 +195,18 @@ claude
 
 - **Claude Code 2026+** (hooks, subagents, path-scoped rules, slash commands all require this)
 - **Node 20+** (bundled with Claude Code — you have it)
-- **bash** on macOS/Linux; **Git Bash or PowerShell** on Windows
+- **bash** on macOS/Linux; **Git Bash** (recommended) or **PowerShell** on Windows
 - **jq** (optional — hook falls back to grep if absent)
+
+> **Windows note**: macOS/Linux/Git Bash is the primary test surface. The `safety-net.ps1` PowerShell hook ships but has less field data; if hooks misbehave on native PowerShell, `npx stetkeep install` is the shortest recovery path (bypasses ExecutionPolicy + avoids the WSL `bash.exe` proxy).
 
 ---
 
 ## ⚖ vs. the 2026 ecosystem
 
-Honest comparison, based on [competitive research](https://github.com/chanjoongx/mdbrain/blob/main/CHANGELOG.md#030):
+Honest comparison, based on [competitive research](https://github.com/chanjoongx/stetkeep/blob/main/CHANGELOG.md):
 
-| | **mdbrain** | [TDD-Guard](https://github.com/nizos/tdd-guard) | [claude-guardrails](https://github.com/dwarvesf/claude-guardrails) | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
+| | **stetkeep** | [TDD-Guard](https://github.com/nizos/tdd-guard) | [claude-guardrails](https://github.com/dwarvesf/claude-guardrails) | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
 |---|---|---|---|---|---|
 | **Scope** | XML protocols + FP catalog | TDD-specific blocking | Security permissions | Subagent library | Kitchen-sink toolkit |
 | **Stars (Apr 2026)** | v0.3.0 launch | 2K | 12 | 17.7K | 160K |
@@ -205,6 +225,8 @@ If you want **a protocol framework with a curated false-positive registry**, tha
 
 ## 🎯 Verify it works
 
+> Checks 1-3 assume the `npx stetkeep install` flow, which copies files into your project's `.claude/`. Plugin-marketplace installs register the artifacts from Claude Code's own plugin directory, so `.claude/agents/` and `.claude/hooks/` will be empty in your project; in that case skip to check 4.
+
 ```bash
 # 1. Hook runs and returns decisions
 echo '{"tool_name":"Edit","tool_input":{"file_path":"legacy/x.ts"}}' \
@@ -220,8 +242,8 @@ ls .claude/agents/
 # 3. Slash commands (after restarting claude)
 # In Claude Code, type `/` — you should see /brain-scan, /craft-audit, /perf-audit
 
-# 4. Quick diagnostic
-npx mdbrain scan
+# 4. Quick diagnostic (works in both install modes)
+npx stetkeep scan
 ```
 
 ---
@@ -229,7 +251,7 @@ npx mdbrain scan
 ## 🔧 Troubleshooting
 
 ### Windows PowerShell execution policy blocks install.ps1
-Use `npx mdbrain install` instead (npm bypasses the .ps1 policy entirely). Or:
+Use `npx stetkeep install` instead (npm bypasses the .ps1 policy entirely). Or:
 ```powershell
 powershell -ExecutionPolicy Bypass -File install.ps1
 ```
@@ -238,7 +260,7 @@ powershell -ExecutionPolicy Bypass -File install.ps1
 Cosmetic only on Korean / CP949 consoles. Run `chcp 65001` first, or just ignore — the install is correct.
 
 ### `bash` in PowerShell tries to invoke WSL
-That's Windows's built-in `bash.exe` (WSL proxy), not Git Bash. Use `npx mdbrain install` (no bash dependency) or open Git Bash directly from the Start menu.
+That's Windows's built-in `bash.exe` (WSL proxy), not Git Bash. Use `npx stetkeep install` (no bash dependency) or open Git Bash directly from the Start menu.
 
 ### Hook doesn't seem to do anything
 Verify the hook returns JSON:
@@ -255,20 +277,23 @@ Claude Code 2026+ required. Older versions don't scan `.claude/commands/`. Check
 ## 📁 Repo layout
 
 ```
-mdbrain/
-├── agents/                      # plugin subagents (Claude Code marketplace compatible)
-├── commands/                    # plugin slash commands
+stetkeep/
+├── agents/                      # plugin subagents (canonical, marketplace-distributed)
+├── commands/                    # plugin slash commands (canonical)
 ├── hooks/
 │   ├── hooks.json               # plugin hook manifest
 │   ├── safety-net.sh            # PreToolUse (bash)
 │   └── safety-net.ps1           # PreToolUse (PowerShell)
-├── .claude/
-│   ├── rules/                   # path-scoped rules (user-level, not plugin-packagable)
+├── .claude/                     # dogfooding mirrors + user-level files
+│   ├── agents/                  # mirror of ../agents/ (loaded when claude runs inside this repo)
+│   ├── commands/                # mirror of ../commands/
+│   ├── hooks/                   # mirror of ../hooks/
+│   ├── rules/                   # path-scoped rules (npm-distributed; plugin spec cannot package these)
 │   └── settings.example.json    # hook wiring template
 ├── .claude-plugin/
 │   ├── plugin.json              # Claude Code plugin manifest
 │   └── marketplace.json         # self-hosted marketplace entry
-├── bin/mdbrain.js               # npm CLI entry (ESM, Node 20+, stdlib only)
+├── bin/stetkeep.js               # npm CLI entry (ESM, Node 20+, stdlib only)
 ├── lib/
 │   ├── install.js               # cross-platform installer
 │   ├── scan.js                  # ecosystem diagnostic
@@ -278,6 +303,7 @@ mdbrain/
 ├── PERF.md                      # performance protocol + FP catalog
 ├── ARCHITECTURE.md              # honest enforcement breakdown
 ├── BOOTSTRAP_GUIDE.md           # first-session walkthrough
+├── PRIVACY.md                   # privacy policy (zero data collection)
 ├── benchmark/SPEC.md            # evaluation methodology
 ├── validators/                  # installation verification (.sh + .ps1)
 ├── install.sh / install.ps1     # thin wrappers over lib/install.js
@@ -293,7 +319,7 @@ mdbrain/
 
 We publish a pre-registered evaluation spec instead of hand-wavy numbers:
 
-📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — 50 test cases, 3 conditions (vanilla / mdbrain full / mdbrain Safety-Net-only), human rubric grading (Cohen's κ ≥ 0.75), paired bootstrap statistics, `~$18–25` per full run on Opus 4.7 (April 2026 pricing).
+📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — 50 test cases, 3 conditions (vanilla / stetkeep full / stetkeep Safety-Net-only), human rubric grading (Cohen's κ ≥ 0.75), paired bootstrap statistics, `~$18–25` per full run on Opus 4.7 (April 2026 pricing).
 
 Results pending. We'll publish data + methodology, not a single percentage.
 
@@ -317,10 +343,10 @@ Yes. `coexist` mode (default) preserves everything — only appends a 3-line boo
 - **npm install**: gets you **everything** — the root protocols (BRAIN.md / CRAFT.md / PERF.md), path-scoped rules, settings template, plus the plugin components.
 - **Plugin marketplace**: gets you **only the plugin components** — subagents, slash commands, hook. Path-scoped rules and root-level protocols can't be packaged as a plugin, so they stay user-level.
 
-For full mdbrain behavior, use npm install. For lightweight subagent access, plugin install is enough.
+For full stetkeep behavior, use npm install. For lightweight subagent access, plugin install is enough.
 
 ### Built with AI?
-Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing mdbrain is built to prevent.
+Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing stetkeep is built to prevent.
 
 ---
 
@@ -328,10 +354,10 @@ Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claud
 
 - [x] **v0.1** — protocol-only draft
 - [x] **v0.2** — Claude Code 2026 native mechanisms (hooks, subagents, path-scoped rules)
-- [x] **v0.3** — **npm package + plugin manifest + ecosystem repositioning**
-- [ ] **v0.4** — Claude Code marketplace submission; `npx mdbrain init` interactive
+- [x] **v0.3** — npm package, plugin manifest, ecosystem repositioning, Anthropic marketplace submission
+- [ ] **v0.3.1** — run the benchmark, publish results (`benchmark/SPEC.md` → real numbers)
+- [ ] **v0.4** — `npx stetkeep init` interactive + user feedback integration
 - [ ] **v0.5** — per-language variants (`CRAFT.python.md`, `CRAFT.rust.md`)
-- [ ] **v0.6** — run the benchmark, publish results
 - [ ] **v1.0** — stable API, typed plugin configs
 
 ---
@@ -349,7 +375,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Highest-value contributions:
 
 ## 📜 License
 
-MIT. Use it, fork it, ship it.
+[MIT](LICENSE). Use it, fork it, ship it.
 
 ---
 

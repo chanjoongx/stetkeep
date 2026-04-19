@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// mdbrain CLI entry
+// stetkeep CLI entry
 // Supports: install, scan, --version, --help
 
 import { parseArgs } from 'node:util';
@@ -13,13 +13,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PKG_ROOT = path.resolve(__dirname, '..');
 const pkg = JSON.parse(readFileSync(path.join(PKG_ROOT, 'package.json'), 'utf8'));
 
-const HELP = `mdbrain v${pkg.version} — XML protocol framework for Claude Code
+const HELP = `stetkeep v${pkg.version} — XML protocol framework for Claude Code
 
 USAGE
-  mdbrain install [path]       Install mdbrain into a project (default: cwd)
-  mdbrain scan [path]          Scan project's MD ecosystem (read-only)
-  mdbrain --version, -v        Print version
-  mdbrain --help, -h           Print this help
+  stetkeep install [path]       Install stetkeep into a project (default: cwd)
+  stetkeep scan [path]          Scan project's MD ecosystem (read-only)
+  stetkeep --version, -v        Print version
+  stetkeep --help, -h           Print this help
 
 INSTALL OPTIONS
   --mode <coexist|merge|fresh>   How to handle existing CLAUDE.md
@@ -30,14 +30,14 @@ INSTALL OPTIONS
   --dry-run                      Simulate install without writing
 
 EXAMPLES
-  mdbrain install                       # install into current directory
-  mdbrain install ~/my-project          # install into specific path
-  mdbrain install --dry-run             # preview what would change
-  mdbrain install --mode merge          # append Protocols section to CLAUDE.md
-  mdbrain install --mode fresh --force  # overwrite everything with template
+  stetkeep install                       # install into current directory
+  stetkeep install ~/my-project          # install into specific path
+  stetkeep install --dry-run             # preview what would change
+  stetkeep install --mode merge          # append Protocols section to CLAUDE.md
+  stetkeep install --mode fresh --force  # overwrite everything with template
 
-DOCS   https://github.com/chanjoongx/mdbrain
-ISSUES https://github.com/chanjoongx/mdbrain/issues
+DOCS   https://github.com/chanjoongx/stetkeep
+ISSUES https://github.com/chanjoongx/stetkeep/issues
 `;
 
 const command = process.argv[2];
@@ -103,13 +103,13 @@ async function main() {
       break;
     default:
       console.error(`Unknown command: ${command}\n`);
-      console.error('Run `mdbrain --help` for usage.');
+      console.error('Run `stetkeep --help` for usage.');
       process.exit(1);
   }
 }
 
 main().catch(err => {
-  console.error(`mdbrain: ${err.message}`);
+  console.error(`stetkeep: ${err.message}`);
   if (process.env.DEBUG) console.error(err.stack);
   process.exit(1);
 });

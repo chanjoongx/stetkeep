@@ -1,4 +1,4 @@
-# ARCHITECTURE.md — How mdbrain Actually Works
+# ARCHITECTURE.md — How stetkeep Actually Works
 
 > Technical reference. Every claim in this document is backed by a real
 > Claude Code mechanism: hooks, subagents, path-scoped rules, permissions,
@@ -114,6 +114,8 @@ User: "clean up src/components/"
 
 ## 3. File Layout
 
+*Shown as it appears in a **user project after `npx stetkeep install`**. Plugin-marketplace installs register agents/commands/hooks from Claude Code's own plugin directory and do not populate this tree.*
+
 ```
 project-root/
 ├── CLAUDE.md                       # Layer E (auto-loaded)
@@ -158,7 +160,7 @@ project-root/
 | **Path-scoped rules** | Token efficient — CRAFT rules only load when Claude is actually editing code, not during doc work. Uses native Claude Code 2026 mechanism. |
 | **Slash commands over magic phrases** | Discoverable (tab-complete), versionable, testable. Replaces "type this exact sentence" pattern. |
 | **Permissions `deny` list** | Hard backstop if the hook has a bug. Defense in depth. |
-| **XML tags in CRAFT/PERF** | Anthropic 2026 recommendation — models attend to XML-delimited directive blocks more reliably than emoji-prefixed Markdown headers. |
+| **XML tags in CRAFT/PERF** | [Anthropic's prompting guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags) explicitly recommends XML tags for prompt structuring: "XML tags can be a game-changer... they help Claude parse your prompts more accurately." Models attend to XML-delimited directive blocks more reliably than emoji-prefixed Markdown headers. |
 | **False-positive catalogs preserved verbatim** | The single most behaviorally-effective content in the repo per multiple reviews. Kept as lookup tables. |
 
 ---
@@ -274,20 +276,20 @@ Being honest about scope:
 
 ## 10. Related Work & Prior Art
 
-mdbrain builds on or relates to the following literature. The project does not claim novelty in the concepts below — only in assembling them into a practitioner-ready extension.
+stetkeep builds on or relates to the following literature. The project does not claim novelty in the concepts below — only in assembling them into a practitioner-ready extension.
 
 **LLM orchestration & rule systems**:
-- **Constitutional AI** (Bai et al., 2022, *arXiv:2212.08073*) — principle-driven self-critique. Closest prior art for the rule-bound behavior mdbrain's protocols encode.
-- **Mixture-of-Experts gating** (Shazeer et al., 2017, *ICLR*) — learned routing between specialists. mdbrain uses keyword-triggered subagent delegation instead; acknowledged as a simpler but shallower mechanism.
-- **LLM-Blender / RouteLLM** (Jiang et al., 2023; Ong et al., 2024) — query-routing across models. mdbrain routes across *prompts within one model*, not across models.
-- **Anthropic's Claude Code extension surface (2026)** — hooks, subagents, path-scoped rules. mdbrain composes these; it does not reimplement them.
+- **Constitutional AI** (Bai et al., 2022, *arXiv:2212.08073*) — principle-driven self-critique. Closest prior art for the rule-bound behavior stetkeep's protocols encode.
+- **Mixture-of-Experts gating** (Shazeer et al., 2017, *ICLR*) — learned routing between specialists. stetkeep uses keyword-triggered subagent delegation instead; acknowledged as a simpler but shallower mechanism.
+- **LLM-Blender / RouteLLM** (Jiang et al., 2023; Ong et al., 2024) — query-routing across models. stetkeep routes across *prompts within one model*, not across models.
+- **Anthropic's Claude Code extension surface (2026)** — hooks, subagents, path-scoped rules. stetkeep composes these; it does not reimplement them.
 
 **Cognitive architecture references (for the mnemonic)**:
 - **Miller & Cohen (2001)**, *An Integrative Theory of Prefrontal Cortex Function* (Annu. Rev. Neurosci.) — task-set selection and conflict monitoring. Loosely inspires the BRAIN routing framing.
 - **McClelland, McNaughton & O'Reilly (1995)**, Complementary Learning Systems — fast episodic + slow semantic memory. Better fit for the "session memory vs. project facts" distinction than any single-region analogy.
 - **Badre (2008)**, rostro-caudal PFC hierarchy — informs the priority-levels framing.
 
-Where mdbrain's naming invokes anatomical terms (e.g., "BRAIN as orchestrator"), it does so as mnemonic pedagogy. The engineering is implemented against the Claude Code 2026 extension surface, not against a cognitive model.
+Where stetkeep's naming invokes anatomical terms (e.g., "BRAIN as orchestrator"), it does so as mnemonic pedagogy. The engineering is implemented against the Claude Code 2026 extension surface, not against a cognitive model.
 
 ---
 

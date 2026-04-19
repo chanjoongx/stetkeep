@@ -1,0 +1,9 @@
+# CRAFT refactor exclusion paths (gitignore-style)
+generated/**
+vendor/**
+node_modules/**
+dist/**
+build/**
+.next/**
+*.generated.ts
+*.pb.js

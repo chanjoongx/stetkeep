@@ -1,6 +1,6 @@
 # BOOTSTRAP_GUIDE.md — First Session Walkthrough
 
-> How to use mdbrain in a fresh Claude Code session.
+> How to use stetkeep in a fresh Claude Code session.
 > As of 2026, most of this happens automatically via native Claude Code mechanisms.
 
 ---
@@ -42,7 +42,7 @@ They're referenced by the subagents and rules, but for orchestration visibility:
 
 That runs `.claude/commands/brain-scan.md`, which loads `BRAIN.md` and reports the MD ecosystem map.
 
-**If you haven't installed slash commands yet** (plain `mdbrain` files in project root):
+**If you haven't installed slash commands yet** (plain `stetkeep` files in project root):
 ```
 Read BRAIN.md and map this project's MD ecosystem. Classify each .md file as
 Protocol / Memory / Legacy / Generated.
@@ -142,7 +142,7 @@ Notice what you didn't need to type: "Read BRAIN.md", "check the Safety Net", "g
 
 ### Pitfall 1 — No `.claude/settings.json` in your project
 
-If you installed mdbrain but didn't copy `.claude/settings.json`, hooks won't wire. Safety Net becomes prompt-only.
+If you installed stetkeep but didn't copy `.claude/settings.json`, hooks won't wire. Safety Net becomes prompt-only.
 
 **Fix**: `cp .claude/settings.example.json .claude/settings.json` and customize.
 

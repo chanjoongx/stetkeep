@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# mdbrain — protocol validator
+# stetkeep — protocol validator
 #
-# Verifies a project has mdbrain correctly installed and wired.
+# Verifies a project has stetkeep correctly installed and wired.
 # Run from the project root after `bash install.sh`.
 #
 # Usage:
 #   bash .claude/validators/validate-protocol.sh
-#   bash /path/to/mdbrain/validators/validate-protocol.sh
+#   bash /path/to/stetkeep/validators/validate-protocol.sh
 
 set -u
 
@@ -115,10 +115,10 @@ fi
 
 section "CLAUDE.md Protocol bootstrap"
 if [ -f "CLAUDE.md" ]; then
-    if grep -q "BRAIN.md\|CRAFT.md\|mdbrain" "CLAUDE.md" 2>/dev/null; then
-        pass "CLAUDE.md references mdbrain"
+    if grep -q "BRAIN.md\|CRAFT.md\|stetkeep" "CLAUDE.md" 2>/dev/null; then
+        pass "CLAUDE.md references stetkeep"
     else
-        warn "CLAUDE.md does not reference mdbrain — protocols won't auto-engage"
+        warn "CLAUDE.md does not reference stetkeep — protocols won't auto-engage"
     fi
 fi
 
@@ -138,6 +138,6 @@ elif [ "$WARN" -gt 0 ]; then
     exit 0
 else
     echo ""
-    echo "All layers active. mdbrain is fully wired."
+    echo "All layers active. stetkeep is fully wired."
     exit 0
 fi

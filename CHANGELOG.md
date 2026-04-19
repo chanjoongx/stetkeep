@@ -1,8 +1,57 @@
 # Changelog
 
-All notable changes to mdbrain are documented here.
+All notable changes are documented here.
 Format based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Semver: MAJOR.MINOR.PATCH.
+
+> Note: this project was renamed from `mdbrain` to `stetkeep` at v0.4.0 (2026-04-20). All entries below v0.4.0 refer to the project under its original name.
+
+---
+
+## [0.4.0] — 2026-04-20
+
+### Changed — project renamed from mdbrain to stetkeep
+
+The project has been renamed from `mdbrain` to `stetkeep` due to a brand conflict with [mediaire's `mdbrain`](https://mediaire.ai/en/mdbrain/), an established CE-certified medical AI software for brain MRI analysis (certified 2019-01-21). Continuing under the same name carried real risks:
+
+- Trademark dilution / confusion claims from an established medical brand
+- Anthropic marketplace reviewer rejection on discovery
+- SEO collision and user confusion ("is this a medical AI tool?")
+
+The rebrand was executed at v0.3.0 + 1 day, when the npm download count was still effectively zero, making this the lowest-cost moment to switch.
+
+**Name origin**: `stet` is the traditional editorial mark from Latin "let it stand" — an editor's instruction to cancel a proposed deletion and preserve the original text. `stetkeep` applies the same principle to code: stop Claude from "helpfully" refactoring your intentional code.
+
+### Added — `stet` shorthand npm package
+
+- New companion package `stet` published as a thin proxy over `stetkeep`. Both `npm install stetkeep` and `npm install stet` resolve to the same CLI.
+- `stetkeep` package also registers `stet` as a bin alias, so `stet install` works after either install path.
+
+### Migration for existing `mdbrain` users (all ~zero of you)
+
+- Old package `mdbrain@<=0.3.0` has been deprecated on npm with pointer: "Renamed to stetkeep. See https://github.com/chanjoongx/stetkeep"
+- New package `stetkeep@0.4.0` is **functionally identical** to `mdbrain@0.3.0`
+- Replace `npm install mdbrain` with `npm install stetkeep` (or `npm install stet`)
+- GitHub repo renamed: `chanjoongx/mdbrain` → `chanjoongx/stetkeep` (legacy URLs redirect automatically)
+- Protocol bootstrap line in your `CLAUDE.md` still works; only the package name changed
+
+### Fixed — pre-rename polish (bundled with the rename commit)
+
+- README Install section reorganized into Quickstart (1-step, Layers C/D/E) and Recommended (2-step, all 5 layers) with explicit Layer A/B dependency on `settings.json`
+- Repo layout section now shows the `.claude/` dogfooding mirrors and PRIVACY.md
+- Verify section marks install-mode conditionality (npm-install vs plugin-marketplace)
+- Roadmap updated: `v0.3.1 = benchmark results`, `v0.4 = rebrand + ongoing feedback`, `v0.5 = per-language variants`, `v1.0 = stable API`
+- XML prompting claim now links to [Anthropic's official documentation](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags)
+- Windows best-effort disclaimer in Requirements
+- ARCHITECTURE §3 clarifies the layout is for `npx stetkeep install` flow, not plugin-marketplace installs
+- CLAUDE.md hard constraints now track 4-place version-bump discipline (package.json, plugin.json, marketplace.json confirm, stet proxy)
+- CONTRIBUTING documents the `.claude/` dogfooding mirror convention and manual sync verification
+- `.claude/settings.json` overwrite warning added to README Recommended section
+- `.github/workflows/mirror-sync-check.yml` added to prevent `.claude/` mirror drift via CI
+
+### Removed
+
+- `mdbrain-0.3.0.tgz` local artifact (stale pre-publish snapshot)
 
 ---
 

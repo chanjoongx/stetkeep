@@ -1,0 +1,9 @@
+# PERF optimization exclusion paths
+generated/**
+node_modules/**
+dist/**
+build/**
+.next/**
+tests/**
+scripts/**
+*.min.js

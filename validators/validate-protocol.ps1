@@ -1,11 +1,11 @@
-# mdbrain — protocol validator (PowerShell)
+# stetkeep — protocol validator (PowerShell)
 #
-# Verifies a project has mdbrain correctly installed and wired.
+# Verifies a project has stetkeep correctly installed and wired.
 # Run from the project root after `powershell -File install.ps1`.
 #
 # Usage:
 #   powershell -File .claude\validators\validate-protocol.ps1
-#   powershell -File C:\path\to\mdbrain\validators\validate-protocol.ps1
+#   powershell -File C:\path\to\stetkeep\validators\validate-protocol.ps1
 
 param(
     [string]$ProjectDir = (Get-Location).Path
@@ -134,10 +134,10 @@ if (Test-Path $Settings) {
 Section "CLAUDE.md Protocol bootstrap"
 if (Test-Path "CLAUDE.md") {
     $content = Get-Content "CLAUDE.md" -Raw
-    if ($content -match "BRAIN\.md|CRAFT\.md|mdbrain") {
-        Pass "CLAUDE.md references mdbrain"
+    if ($content -match "BRAIN\.md|CRAFT\.md|stetkeep") {
+        Pass "CLAUDE.md references stetkeep"
     } else {
-        Warn "CLAUDE.md does not reference mdbrain — protocols won't auto-engage"
+        Warn "CLAUDE.md does not reference stetkeep — protocols won't auto-engage"
     }
 }
 
@@ -159,6 +159,6 @@ if ($script:Fail -gt 0) {
     exit 0
 } else {
     Write-Host ""
-    Write-Host "All layers active. mdbrain is fully wired." -ForegroundColor Green
+    Write-Host "All layers active. stetkeep is fully wired." -ForegroundColor Green
     exit 0
 }

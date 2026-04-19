@@ -4,7 +4,7 @@
 
 ---
 
-## 🧠 Protocol bootstrap (mdbrain)
+## 🧠 Protocol bootstrap (stetkeep)
 
 **For every code task, read these before acting**: `BRAIN.md`, `CRAFT.md`, `PERF.md`.
 They define routing, anti-pattern detection, performance discipline, and the Safety Net.

@@ -22,7 +22,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'mdbrain Safety Net active. Run /brain-scan to map the MD ecosystem.'",
+            "command": "echo 'stetkeep Safety Net active. Run /brain-scan to map the MD ecosystem.'",
             "timeout": 2
           }
         ]

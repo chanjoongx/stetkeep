@@ -1,4 +1,4 @@
-# Contributing to mdbrain
+# Contributing to stetkeep
 
 Thank you for considering a contribution. This project improves faster when people
 break it, find its false-positives, and ship real fixes.
@@ -52,7 +52,7 @@ A21+, P21+. The 20+20 catalog is not exhaustive.
 `CRAFT.md` currently biases toward TypeScript/React. Python, Rust, Go would benefit
 from their own variants: `CRAFT.python.md`, `PERF.python.md`, etc.
 
-Scope for v0.4 — open issues with the proposal first so we can align on structure.
+Scope for v0.5 — open issues with the proposal first so we can align on structure.
 
 ### 5. Benchmark corpus cases
 
@@ -115,12 +115,37 @@ rationale: "..."
 
 ---
 
+## Dogfooding layout
+
+The repo contains two copies of the plugin directories on purpose:
+
+- `agents/`, `commands/`, `hooks/` at the repo root are the **canonical**, marketplace-distributed versions
+- `.claude/agents/`, `.claude/commands/`, `.claude/hooks/` are **mirrors** of the canonical versions
+
+The mirrors exist so that running `claude` inside this repo loads stetkeep's own subagents, slash commands, and hooks (dogfooding). They are NOT shipped via npm or the plugin marketplace, so users never see them.
+
+When editing any plugin artifact:
+
+1. Edit the **root** version first (e.g. `agents/brain-router.md`)
+2. Copy the change to the mirror (`.claude/agents/brain-router.md`)
+3. Both versions must stay byte-identical. A pre-commit sync check is on the roadmap; until then this is a manual discipline
+
+Manual sync verification:
+```bash
+diff -rq agents/   .claude/agents/
+diff -rq commands/ .claude/commands/
+diff -rq hooks/    .claude/hooks/
+```
+No output means they agree. Any drift will make in-repo `claude` sessions run stale mirrors while npm/plugin users get the latest version.
+
+---
+
 ## Local development
 
 ```bash
 # Clone
-git clone https://github.com/<username>/mdbrain.git
-cd mdbrain
+git clone https://github.com/<username>/stetkeep.git
+cd stetkeep
 
 # Install into a test project
 bash install.sh /path/to/test-project

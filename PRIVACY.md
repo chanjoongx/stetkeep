@@ -4,15 +4,15 @@
 
 ## Summary
 
-mdbrain does not collect, store, or transmit any user data.
+stetkeep does not collect, store, or transmit any user data.
 
-## What mdbrain does
+## What stetkeep does
 
-mdbrain is a Claude Code plugin and npm CLI that installs local protocol files, hooks, and subagent definitions into your project directory. All operations run entirely on your machine.
+stetkeep is a Claude Code plugin and npm CLI that installs local protocol files, hooks, and subagent definitions into your project directory. All operations run entirely on your machine.
 
 ## Data collection
 
-**None.** mdbrain:
+**None.** stetkeep:
 
 - Does not make network calls at runtime
 - Does not include telemetry, analytics, or tracking
@@ -22,15 +22,15 @@ mdbrain is a Claude Code plugin and npm CLI that installs local protocol files, 
 
 ## Data storage
 
-mdbrain writes files only to your project directory (`.claude/`, `.claude-plugin/`, protocol markdown files). Nothing is stored outside your local filesystem.
+stetkeep writes files only to your project directory (`.claude/`, `.claude-plugin/`, protocol markdown files). Nothing is stored outside your local filesystem.
 
 ## Third-party services
 
-mdbrain itself integrates with no third-party services. When installed into a Claude Code project, Claude Code's own data handling applies to your prompts and tool calls, governed by Anthropic's privacy policy (https://www.anthropic.com/legal/privacy).
+stetkeep itself integrates with no third-party services. When installed into a Claude Code project, Claude Code's own data handling applies to your prompts and tool calls, governed by Anthropic's privacy policy (https://www.anthropic.com/legal/privacy).
 
 ## Contact
 
-For privacy questions, open an issue at https://github.com/chanjoongx/mdbrain/issues or email cj@chanjoongx.com.
+For privacy questions, open an issue at https://github.com/chanjoongx/stetkeep/issues or email cj@chanjoongx.com.
 
 ## Changes
 

@@ -1,0 +1,44 @@
+{
+  "name": "stet",
+  "version": "0.4.0",
+  "description": "Shorthand alias for stetkeep: XML protocol framework + false-positive catalog for Claude Code. Installs and uses stetkeep under the hood.",
+  "type": "module",
+  "bin": {
+    "stet": "proxy.js"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "CJ Kim",
+    "email": "cj@chanjoongx.com",
+    "url": "https://github.com/chanjoongx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chanjoongx/stetkeep.git",
+    "directory": "stet"
+  },
+  "bugs": {
+    "url": "https://github.com/chanjoongx/stetkeep/issues"
+  },
+  "homepage": "https://github.com/chanjoongx/stetkeep#readme",
+  "keywords": [
+    "stetkeep",
+    "alias",
+    "shorthand",
+    "claude-code",
+    "anthropic"
+  ],
+  "files": [
+    "proxy.js",
+    "README.md"
+  ],
+  "dependencies": {
+    "stetkeep": "0.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,14 +1,14 @@
 {
-  "name": "mdbrain",
-  "version": "0.3.0",
+  "name": "stetkeep",
+  "version": "0.4.0",
   "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails (hooks + tool-scoped subagents) against AI refactoring mistakes.",
   "author": {
     "name": "CJ Kim",
     "email": "cj@chanjoongx.com",
     "url": "https://github.com/chanjoongx"
   },
-  "homepage": "https://github.com/chanjoongx/mdbrain",
-  "repository": "https://github.com/chanjoongx/mdbrain",
+  "homepage": "https://github.com/chanjoongx/stetkeep",
+  "repository": "https://github.com/chanjoongx/stetkeep",
   "license": "MIT",
   "keywords": [
     "claude-code",

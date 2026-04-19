@@ -1,0 +1,27 @@
+name: Mirror sync check
+
+# Verifies that .claude/agents, .claude/commands, .claude/hooks stay byte-identical
+# to the canonical agents/, commands/, hooks/ directories at the repo root.
+# The mirrors exist for in-repo dogfooding: running `claude` inside this repo
+# loads stetkeep's own subagents, slash commands, and hooks. Drift means
+# dogfooding sessions run stale copies while npm / plugin users get the latest.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify-mirrors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: agents/ matches .claude/agents/
+        run: diff -rq agents/ .claude/agents/
+
+      - name: commands/ matches .claude/commands/
+        run: diff -rq commands/ .claude/commands/
+
+      - name: hooks/ matches .claude/hooks/ (excluding plugin-only hooks.json)
+        run: diff -rq hooks/ .claude/hooks/ --exclude=hooks.json

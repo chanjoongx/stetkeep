@@ -1,5 +1,5 @@
 {
-  "_comment": "mdbrain plugin hook manifest. Safety Net runs on every Edit/Write/Bash.",
+  "_comment": "stetkeep plugin hook manifest. Safety Net runs on every Edit/Write/Bash.",
 
   "hooks": {
     "PreToolUse": [

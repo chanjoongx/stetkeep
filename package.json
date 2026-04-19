@@ -1,10 +1,11 @@
 {
-  "name": "mdbrain",
-  "version": "0.3.0",
+  "name": "stetkeep",
+  "version": "0.4.0",
   "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails against AI refactoring mistakes via hooks, tool-scoped subagents, and path-scoped rules.",
   "type": "module",
   "bin": {
-    "mdbrain": "bin/mdbrain.js"
+    "stetkeep": "bin/stetkeep.js",
+    "stet": "bin/stetkeep.js"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -17,12 +18,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chanjoongx/mdbrain.git"
+    "url": "git+https://github.com/chanjoongx/stetkeep.git"
   },
   "bugs": {
-    "url": "https://github.com/chanjoongx/mdbrain/issues"
+    "url": "https://github.com/chanjoongx/stetkeep/issues"
   },
-  "homepage": "https://github.com/chanjoongx/mdbrain#readme",
+  "homepage": "https://github.com/chanjoongx/stetkeep#readme",
   "keywords": [
     "claude-code",
     "claude",
@@ -54,12 +55,13 @@
     "CLAUDE.template.md",
     "ARCHITECTURE.md",
     "BOOTSTRAP_GUIDE.md",
+    "PRIVACY.md",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
-    "test": "node bin/mdbrain.js --version"
+    "test": "node bin/stetkeep.js --version"
   },
   "publishConfig": {
     "access": "public"

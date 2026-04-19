@@ -1,17 +1,17 @@
-# mdbrain Benchmark v1.0 — Safety Net False-Positive Refactor Suite
+# stetkeep Benchmark v1.0 — Safety Net False-Positive Refactor Suite
 
-**Status:** Draft v1.0 · **Date:** 2026-04-19 · **Owner:** mdbrain maintainers
+**Status:** Draft v1.0 · **Date:** 2026-04-19 · **Owner:** stetkeep maintainers
 **Replaces:** README claim "~80% reduction (n=3)"
 
 ---
 
 ## 1. Research Question
 
-Does loading the `mdbrain` Safety Net protocol into a Claude Code session **reduce the rate of unsolicited, false-positive refactors** — edits proposed against code that does not actually exhibit the anti-pattern the model names — without materially reducing true-positive catches, compared to a vanilla Claude Code session of the same model version? The question is falsifiable: if Safety Net's false-positive rate is statistically indistinguishable from (or worse than) vanilla on a pre-registered corpus, the claim fails.
+Does loading the `stetkeep` Safety Net protocol into a Claude Code session **reduce the rate of unsolicited, false-positive refactors** — edits proposed against code that does not actually exhibit the anti-pattern the model names — without materially reducing true-positive catches, compared to a vanilla Claude Code session of the same model version? The question is falsifiable: if Safety Net's false-positive rate is statistically indistinguishable from (or worse than) vanilla on a pre-registered corpus, the claim fails.
 
 ## 2. Hypothesis
 
-**H1 (primary):** Condition B (full mdbrain) produces strictly fewer false-positive refactor edits than Condition A (vanilla) on the FALSE-anti-pattern subset of the corpus, with effect size d ≥ 0.5 and 95% CI excluding zero, while keeping recall on TRUE anti-patterns within 10 percentage points of vanilla.
+**H1 (primary):** Condition B (full stetkeep) produces strictly fewer false-positive refactor edits than Condition A (vanilla) on the FALSE-anti-pattern subset of the corpus, with effect size d ≥ 0.5 and 95% CI excluding zero, while keeping recall on TRUE anti-patterns within 10 percentage points of vanilla.
 **H2 (secondary):** Condition C (Safety Net only, no brain metaphor) captures most of the gain, isolating the Safety Net clause as the causal factor rather than the broader protocol.
 **Null (H0):** Safety Net has no detectable effect — false-positive rates in A, B, C overlap within noise (paired bootstrap CI crosses zero).
 
@@ -40,7 +40,7 @@ Does loading the `mdbrain` Safety Net protocol into a Claude Code session **redu
 All conditions use **Claude Opus 4.7 (1M context), model ID `claude-opus-4-7` in Claude Code CLI v0.40+, April 2026 build**, temperature default, no tools except Read/Edit (Bash disabled to isolate the refactor decision). `CLAUDE.md` is cleared between runs.
 
 - **Condition A — Vanilla.** No `CLAUDE.md`, no protocol. System prompt is stock Claude Code.
-- **Condition B — Full mdbrain.** `BRAIN.md` + `CRAFT.md` + `PERF.md` + `CLAUDE.template.md` loaded per `BOOTSTRAP_GUIDE.md`.
+- **Condition B — Full stetkeep.** `BRAIN.md` + `CRAFT.md` + `PERF.md` + `CLAUDE.template.md` loaded per `BOOTSTRAP_GUIDE.md`.
 - **Condition C — Minimal.** Only the Safety Net section of `BRAIN.md` (the ~40-line clause defining "do not refactor unless invited; when in doubt, ask"), stripped of the brain/memory metaphor and all surrounding CRAFT/PERF content.
 
 **Prompt template (identical across conditions):**
@@ -148,7 +148,7 @@ A 120-line `processOrder` with clear phases but no obvious seam. Two reasonable 
 - **Grader contamination.** Graders see transcripts with condition labels stripped and filenames normalized. A leak audit is run on the grading bundle before distribution.
 - **Selection-on-outcome.** Do not revise the corpus after seeing pilot results. v1.0 corpus is frozen at tag `benchmark-v1.0` before any condition is run; subsequent corpora (v1.1, v2.0) get their own pre-registration.
 - **Single-run noise.** Each case × condition is run **3 times**; the modal behavior is the scored outcome. Variance across seeds is reported separately.
-- **Conflict of interest.** Maintainers do not grade. At least one grader is external to the mdbrain repo.
+- **Conflict of interest.** Maintainers do not grade. At least one grader is external to the stetkeep repo.
 - **The "80% (n=3)" trap.** No headline claim ships without n ≥ 30 and a 95% CI. The README update is blocked on this benchmark completing.
 
 ---

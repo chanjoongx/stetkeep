@@ -1,7 +1,7 @@
-# mdbrain installer — thin wrapper over lib/install.js (v0.3+)
+# stetkeep installer — thin wrapper over lib/install.js (v0.3+)
 #
 # If you cloned the repo: this runs the Node installer directly.
-# If you have npm: prefer `npx mdbrain install` or `npm i -g mdbrain` instead.
+# If you have npm: prefer `npx stetkeep install` or `npm i -g stetkeep` instead.
 #
 # Usage:
 #   powershell -File install.ps1                           # default coexist mode
@@ -25,13 +25,13 @@ $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
     Write-Host "ERROR: node not found." -ForegroundColor Red
-    Write-Host "mdbrain requires Node.js 20+ (already bundled with Claude Code)."
+    Write-Host "stetkeep requires Node.js 20+ (already bundled with Claude Code)."
     Write-Host "Install from https://nodejs.org/"
     exit 1
 }
 
 # Build argument list for the Node CLI
-$nodeArgs = @("$ScriptDir\bin\mdbrain.js", "install", $ProjectDir, "--mode", $Mode)
+$nodeArgs = @("$ScriptDir\bin\stetkeep.js", "install", $ProjectDir, "--mode", $Mode)
 if ($Force)  { $nodeArgs += "--force" }
 if ($DryRun) { $nodeArgs += "--dry-run" }
 
