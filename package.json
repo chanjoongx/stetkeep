@@ -4,7 +4,7 @@
   "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails against AI refactoring mistakes via hooks, tool-scoped subagents, and path-scoped rules.",
   "type": "module",
   "bin": {
-    "mdbrain": "./bin/mdbrain.js"
+    "mdbrain": "bin/mdbrain.js"
   },
   "engines": {
     "node": ">=20.0.0"
@@ -62,7 +62,6 @@
     "test": "node bin/mdbrain.js --version"
   },
   "publishConfig": {
-    "access": "public",
-    "provenance": true
+    "access": "public"
   }
 }
