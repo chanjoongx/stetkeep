@@ -37,14 +37,26 @@
 - [x] Local git remote 갱신
 - [x] `npm publish stetkeep@0.4.0`
 
-### 남은 것
-- [ ] `stet` proxy 포기 반영한 새 commit + push
-- [ ] `npm deprecate mdbrain@"<=0.3.0"` (2FA)
-- [ ] `git tag v0.4.0 && git push origin v0.4.0`
-- [ ] `gh release create v0.4.0 -F .release-notes-v0.4.0.md`
+### 2026-04-20 종료 시 완료 (추가)
+- [x] `stet` proxy 제거 (commit c19947f)
+- [x] `npm deprecate mdbrain@"<=0.3.0"` (정확한 메시지로 live 작동 확인)
+- [x] `git tag v0.4.0 && git push origin v0.4.0`
+- [x] `gh release create v0.4.0` (웹 UI)
+- [x] README ASCII art MDBRAIN → STETKEEP (commit 1e355e1)
+- [x] 4인 전문가 audit + v0.4.1 patch (commit 290f3c2): bin exit code, install.js legacy regex, ps1 parity, hook false-positive fix, commands argument-hint + $ARGUMENTS, subagent description 개선, metadata alignment
+- [x] `stetkeep@0.4.1` npm publish
+- [x] `git tag v0.4.1 && git push origin v0.4.1`
+- [x] GitHub Release v0.4.1 (웹 UI)
+- [x] `.github/workflows/publish.yml` OIDC 워크플로 (commit aa23a82)
+- [x] npm Trusted Publisher 등록 (chanjoongx/stetkeep + publish.yml)
+- [x] Publishing access: Require 2FA + disallow tokens (maximum security)
+
+### 남은 것 (자율 타이밍)
 - [ ] Anthropic 마켓 stetkeep 재제출 (웹 포털 `clau.de/plugin-directory-submission`)
-- [ ] 이력서 v11 업데이트
+- [ ] 이력서 v11 업데이트 (v10 → v11: stetkeep + new tagline + OIDC trusted publishing bullet)
+- [ ] Benchmark SPEC 실행 (`benchmark/SPEC.md` → real numbers, v0.5 prep)
 - [ ] (선택) `stetkeep.com` 도메인 등록
+- [ ] (장기) v0.5 per-language variants (CRAFT.python.md 등)
 
 ---
 
