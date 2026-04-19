@@ -15,17 +15,40 @@
 - [x] 코드/문서 일괄 sed (mdbrain → stetkeep, 175 occurrences across 27 files)
 - [x] `bin/mdbrain.js` → `bin/stetkeep.js` rename
 - [x] `package.json` + `.claude-plugin/plugin.json` version 0.3.0 → 0.4.0
-- [x] `package.json` `bin` 에 `stet` alias 추가
-- [x] `stet/` proxy 패키지 디렉토리 생성 (package.json, proxy.js, README.md)
+- [x] `package.json` `bin` 에 `stet` alias 추가 (CLI 이름만, npm 패키지 아님)
 - [x] CHANGELOG v0.4.0 엔트리 추가 (기존 v0.3.0 및 이하 보존)
-- [x] CLAUDE.md 릴리스 프로세스: 4곳 version bump + stet proxy publish 순서 명시
-- [x] `.github/workflows/mirror-sync-check.yml` CI workflow 생성 (잔여작업 2 완료)
-- [x] README `.claude/settings.json` 덮어쓰기 경고 blockquote (잔여작업 1 완료)
+- [x] CLAUDE.md 릴리스 프로세스: 3곳 version bump
+- [x] `.github/workflows/mirror-sync-check.yml` CI workflow 생성
+- [x] README `.claude/settings.json` 덮어쓰기 경고 blockquote
 - [x] `mdbrain-0.3.0.tgz` stale artifact 삭제
-- [x] `.release-notes-v0.3.0.md` 와 CHANGELOG v0.3.0 이하 **비수정** (released artifact 보존)
+- [x] `.release-notes-v0.3.0.md` 와 CHANGELOG v0.3.0 이하 비수정 (released artifact 보존)
 - [x] 미러 SYNC 유지 (`diff -rq agents/ .claude/agents/` 등 전부 sync)
+- [x] **GitHub repo rename 완료**: `chanjoongx/mdbrain` → `chanjoongx/stetkeep` (자동 redirect 유지)
+- [x] **Push 완료**: main branch origin/main 에 반영 (commit c675a4a)
+- [x] **npm publish stetkeep@0.4.0 성공** (2026-04-20)
+- [x] **stet proxy 패키지 포기**: npm typosquatting 정책 (403 Forbidden) 으로 unscoped publish 불가. 관련 문서 (CHANGELOG, release notes, CLAUDE, 메모리) 정리 완료 → 새 commit 필요
 
-**CJ 외부 시스템 액션 (미완료)**:
+**CJ 외부 시스템 액션 (남은 것)**:
+
+### 완료 상태 (2026-04-20)
+- [x] Anthropic 마켓 support chat → withdrawal 불가, "자연 reject + stetkeep 재제출" clearance 받음. Ticket ID `215473982749776`
+- [x] Git commit + push (main branch c675a4a)
+- [x] GitHub repo rename: `chanjoongx/mdbrain` → `chanjoongx/stetkeep`
+- [x] Local git remote 갱신
+- [x] `npm publish stetkeep@0.4.0`
+
+### 남은 것
+- [ ] `stet` proxy 포기 반영한 새 commit + push
+- [ ] `npm deprecate mdbrain@"<=0.3.0"` (2FA)
+- [ ] `git tag v0.4.0 && git push origin v0.4.0`
+- [ ] `gh release create v0.4.0 -F .release-notes-v0.4.0.md`
+- [ ] Anthropic 마켓 stetkeep 재제출 (웹 포털 `clau.de/plugin-directory-submission`)
+- [ ] 이력서 v11 업데이트
+- [ ] (선택) `stetkeep.com` 도메인 등록
+
+---
+
+### 이하 과거 CJ 외부 시스템 액션 전체 목록 (reference):
 
 ### Anthropic 마켓 withdrawal 이메일 (즉시, 2분)
 - **받는곳**: Anthropic 플러그인 마켓 contact (support@anthropic.com 또는 제출 confirmation reply-to)

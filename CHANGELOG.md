@@ -22,16 +22,16 @@ The rebrand was executed at v0.3.0 + 1 day, when the npm download count was stil
 
 **Name origin**: `stet` is the traditional editorial mark from Latin "let it stand" — an editor's instruction to cancel a proposed deletion and preserve the original text. `stetkeep` applies the same principle to code: stop Claude from "helpfully" refactoring your intentional code.
 
-### Added — `stet` shorthand npm package
+### Added — `stet` CLI alias
 
-- New companion package `stet` published as a thin proxy over `stetkeep`. Both `npm install stetkeep` and `npm install stet` resolve to the same CLI.
-- `stetkeep` package also registers `stet` as a bin alias, so `stet install` works after either install path.
+- The `stetkeep` package registers `stet` as a bin alias. After `npm install -g stetkeep`, both `stet install` and `stetkeep install` work identically.
+- Note on the `stet` npm package name: we considered publishing a thin proxy package named `stet` as an additional shorthand, but npm's typosquatting protection blocks the name (it's considered too similar to `st`, `net`, `test`, etc.). This also means no one else can claim the name, so `stet` as a CLI shorthand is effectively reserved by npm policy. The only lost affordance is `npm install stet` as an installation command; the `stet` CLI command itself still works via the bin alias above.
 
 ### Migration for existing `mdbrain` users (all ~zero of you)
 
 - Old package `mdbrain@<=0.3.0` has been deprecated on npm with pointer: "Renamed to stetkeep. See https://github.com/chanjoongx/stetkeep"
 - New package `stetkeep@0.4.0` is **functionally identical** to `mdbrain@0.3.0`
-- Replace `npm install mdbrain` with `npm install stetkeep` (or `npm install stet`)
+- Replace `npm install mdbrain` with `npm install stetkeep`
 - GitHub repo renamed: `chanjoongx/mdbrain` → `chanjoongx/stetkeep` (legacy URLs redirect automatically)
 - Protocol bootstrap line in your `CLAUDE.md` still works; only the package name changed
 
@@ -44,7 +44,7 @@ The rebrand was executed at v0.3.0 + 1 day, when the npm download count was stil
 - XML prompting claim now links to [Anthropic's official documentation](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags)
 - Windows best-effort disclaimer in Requirements
 - ARCHITECTURE §3 clarifies the layout is for `npx stetkeep install` flow, not plugin-marketplace installs
-- CLAUDE.md hard constraints now track 4-place version-bump discipline (package.json, plugin.json, marketplace.json confirm, stet proxy)
+- CLAUDE.md hard constraints now track 3-place version-bump discipline (package.json, plugin.json, marketplace.json confirm)
 - CONTRIBUTING documents the `.claude/` dogfooding mirror convention and manual sync verification
 - `.claude/settings.json` overwrite warning added to README Recommended section
 - `.github/workflows/mirror-sync-check.yml` added to prevent `.claude/` mirror drift via CI
