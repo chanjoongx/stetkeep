@@ -1,5 +1,5 @@
 {
-  "$schema": "https://claude.com/schemas/settings.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "_comment": "Copy to .claude/settings.json in your project root. Safety Net is enforced by hooks, not by prompt assertion.",
   "_platform_note": "The hook command below uses bash. macOS/Linux/Git Bash users: keep as-is. Windows native PowerShell users: change 'command' to 'powershell -File $CLAUDE_PROJECT_DIR/.claude/hooks/safety-net.ps1' (use the .ps1 file we ship, not .sh).",
 

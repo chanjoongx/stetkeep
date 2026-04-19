@@ -1,5 +1,4 @@
 {
-  "$schema": "https://claude.com/schemas/hooks.json",
   "_comment": "mdbrain plugin hook manifest. Safety Net runs on every Edit/Write/Bash.",
 
   "hooks": {
