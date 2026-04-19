@@ -1,0 +1,40 @@
+name: Publish to npm
+
+# Publishes stetkeep to npm on semver tag push (v*.*.*).
+# Uses OIDC trusted publishing — no NPM_TOKEN required.
+# Provenance attestations are generated automatically (Sigstore-signed).
+#
+# Setup required on npmjs.com (Settings > Trusted Publishers):
+#   Publisher:         GitHub Actions
+#   Organization/user: chanjoongx
+#   Repository:        stetkeep
+#   Workflow filename: publish.yml
+#   Environment:       (leave blank)
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # Required for OIDC
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Verify package integrity
+        run: npm pack --dry-run
+
+      - name: Publish to npm (with provenance via OIDC)
+        run: npm publish --access public
