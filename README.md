@@ -13,8 +13,6 @@
 
 **Stop Claude from "helpfully" refactoring your intentional code.**
 
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&size=18&duration=3500&pause=900&color=A78BFA&center=true&vCenter=true&width=760&lines=XML-structured+protocols.+Not+prose+prompts.;16-entry+false-positive+catalog.;The+intentional-code+defense+layer.)](https://git.io/typing-svg)
-
 [![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
@@ -386,7 +384,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Highest-value contributions:
 
 <div align="center">
 
-**Built by [CJ Kim](https://github.com/chanjoongx) · Stress-tested with Claude · Launched 2026-04-19 · Renamed to `stetkeep` 2026-04-20**
+**Built by [CJ Kim](https://github.com/chanjoongx) · Stress-tested with Claude · Launched 2026-04-19**
 
 *The model is eager. The Safety Net is skeptical. The XML protocol is structured.*
 
