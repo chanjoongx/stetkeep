@@ -1,7 +1,7 @@
 # stetkeep — protocol validator (PowerShell)
 #
 # Verifies a project has stetkeep correctly installed and wired.
-# Run from the project root after `powershell -File install.ps1`.
+# Run from the project root after `npx stetkeep install`.
 #
 # Usage:
 #   powershell -File .claude\validators\validate-protocol.ps1
@@ -151,7 +151,7 @@ Write-Host "  Failed: $($script:Fail)"
 
 if ($script:Fail -gt 0) {
     Write-Host ""
-    Write-Host "Some required components are missing. Re-run install.ps1 or fix manually." -ForegroundColor Red
+    Write-Host "Some required components are missing. Re-run 'npx stetkeep install' or fix manually." -ForegroundColor Red
     exit 1
 } elseif ($script:Warn -gt 0) {
     Write-Host ""

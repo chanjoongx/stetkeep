@@ -148,7 +148,7 @@ git clone https://github.com/<username>/stetkeep.git
 cd stetkeep
 
 # Install into a test project
-bash install.sh /path/to/test-project
+node lib/install.js /path/to/test-project
 
 # Verify hooks work
 echo '{"tool_name":"Edit","tool_input":{"file_path":"legacy/x.ts"}}' \

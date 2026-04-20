@@ -2,7 +2,7 @@
 # stetkeep — protocol validator
 #
 # Verifies a project has stetkeep correctly installed and wired.
-# Run from the project root after `bash install.sh`.
+# Run from the project root after `npx stetkeep install`.
 #
 # Usage:
 #   bash .claude/validators/validate-protocol.sh
@@ -130,7 +130,7 @@ echo "  Failed: $FAIL"
 
 if [ "$FAIL" -gt 0 ]; then
     echo ""
-    echo "Some required components are missing. Re-run install.sh or fix manually."
+    echo "Some required components are missing. Re-run 'npx stetkeep install' or fix manually."
     exit 1
 elif [ "$WARN" -gt 0 ]; then
     echo ""

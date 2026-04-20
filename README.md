@@ -177,15 +177,15 @@ Inside Claude Code:
 
 Auto-loads subagents, commands, and the hook with no file copying into your project. Tradeoff: path-scoped rules (Layer D) and root-level protocol MDs cannot be packaged by the plugin spec, so they stay user-level. For the full experience use `npx stetkeep install`.
 
-### Alternative: clone + script (for hacking on stetkeep)
+### Alternative: clone + run installer directly (for hacking on stetkeep)
 
 ```bash
 git clone https://github.com/chanjoongx/stetkeep.git
 cd /path/to/your-project
-bash /path/to/stetkeep/install.sh
+node /path/to/stetkeep/lib/install.js
 ```
 
-The `install.sh` is a thin wrapper over `node lib/install.js`. Use this only if you are modifying stetkeep itself.
+Same flags as `npx stetkeep install` (`--mode`, `--force`, `--dry-run`). Use this only if you are modifying stetkeep itself.
 
 ---
 
@@ -248,11 +248,8 @@ npx stetkeep scan
 
 ## 🔧 Troubleshooting
 
-### Windows PowerShell execution policy blocks install.ps1
-Use `npx stetkeep install` instead (npm bypasses the .ps1 policy entirely). Or:
-```powershell
-powershell -ExecutionPolicy Bypass -File install.ps1
-```
+### Windows PowerShell execution policy issues
+Use `npx stetkeep install` — it runs through npm and is not affected by PowerShell's ExecutionPolicy.
 
 ### PowerShell renders em-dashes (`—`) as `??`
 Cosmetic only on Korean / CP949 consoles. Run `chcp 65001` first, or just ignore — the install is correct.
@@ -303,8 +300,8 @@ stetkeep/
 ├── BOOTSTRAP_GUIDE.md           # first-session walkthrough
 ├── PRIVACY.md                   # privacy policy (zero data collection)
 ├── benchmark/SPEC.md            # evaluation methodology
+├── docs/releases/               # per-version release notes (source)
 ├── validators/                  # installation verification (.sh + .ps1)
-├── install.sh / install.ps1     # thin wrappers over lib/install.js
 ├── package.json
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md
