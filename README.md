@@ -16,7 +16,7 @@
 [![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
-[![Version](https://img.shields.io/badge/version-v0.4.5-5FE5D4)](CHANGELOG.md)
+[![Version](https://img.shields.io/github/v/release/chanjoongx/stetkeep?include_prereleases&color=5FE5D4&label=version)](https://github.com/chanjoongx/stetkeep/releases)
 [![Provenance](https://img.shields.io/badge/npm-sigstore%20provenance-34D399?logo=sigstore)](https://www.npmjs.com/package/stetkeep)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
@@ -44,13 +44,13 @@ Two things other Claude Code projects don't ship:
 
 ### 1. **XML-structured protocol framework**
 
-Prose prompts ("be careful when refactoring, prefer readability over cleverness...") don't survive 20K-token contexts. XML-tagged directives do. [Anthropic's own prompting guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags) recommends XML tags explicitly as a way for Claude to parse prompts more accurately. We built three protocols around it:
+Prose prompts ("be careful when refactoring, prefer readability over cleverness...") don't survive 20K-token contexts. XML-tagged directives do. [Anthropic's own prompting guide](https://platform.claude.com/docs/en/docs/build-with-claude/prompt-engineering/use-xml-tags) recommends XML tags explicitly as a way for Claude to parse prompts more accurately. We built three protocols around it:
 
 - **BRAIN.md** — `<routing>` / `<mode>` / `<inhibit>` — decides where a command goes
 - **CRAFT.md** — `<anti_patterns>` / `<safety_net>` / `<false_positives>` — structural refactor discipline
 - **PERF.md** — `<pre_check>` / `<perf_budget>` / `<measurement_gate>` — measurement-first performance work
 
-Each is ~1.8K tokens. Claude's attention lands on XML-delimited sections more reliably than on Markdown prose headers.
+~1–2K tokens each (BRAIN ~1K · CRAFT ~1.5K · PERF ~1.8K). Claude's attention lands on XML-delimited sections more reliably than on Markdown prose headers.
 
 ### 2. **False-positive catalog**
 
@@ -58,7 +58,7 @@ The 16-entry registry of "patterns Claude will mistakenly flag as problems." Exa
 
 | What Claude sees | What Claude will say | What it actually is |
 |---|---|---|
-| 1000-line `constants.js` | "God File (A1). Split it." | A data table. Splitting loses context. |
+| 1000-line config / data file | "God File (A1). Split it." | A data table. Splitting loses context. |
 | Deliberate inline `for` loop | "Duplication (A3). Extract." | Profiled hot path. 10× faster than `reduce`. |
 | Plain `<img>` element | "Use `next/image`." | Below-fold. Not the LCP element. |
 | `Array.map().map().map()` | "Collapse into `reduce`." | V8 optimizes this; readability wins. |
@@ -75,7 +75,7 @@ On top of the XML framework, stetkeep ships a five-layer defense:
 
 - **Layer A** — `permissions.deny` hard-blocks edits to `legacy/`, `generated/`, `vendor/` (deterministic)
 - **Layer B** — PreToolUse hook runs out-of-process; returns `deny`/`ask`/`allow` JSON (deterministic)
-- **Layer C** — Subagent tool scoping — `craft-specialist` / `perf-specialist` can't `Write` new files (structural)
+- **Layer C** — Subagent tool scoping — `craft-specialist` / `perf-specialist` can't create new files; edits to existing files require explicit user approval (structural)
 - **Layer D** — Path-scoped rules auto-load CRAFT/PERF on `src/**` file access (heuristic)
 - **Layer E** — XML protocols + false-positive catalog (heuristic)
 
@@ -110,7 +110,7 @@ This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), 
                  ┌───────────▼────────────┐
                  │ PreToolUse HOOK        │  ◀── mechanical, out-of-process
                  │ hooks/safety-net.sh    │     can deny / ask / allow
-                 │ + false-positive gate  │     XML-catalog-driven
+                 │ path / ignore / marker │     path, ignore, marker-driven
                  └───────────┬────────────┘
                              │
                         allow│deny/ask
@@ -168,7 +168,9 @@ Inside Claude Code:
 - `--mode fresh`: empty-project install (requires `--force` if anything exists)
 - `--dry-run`: preview without writing
 
-### Alternative: Claude Code plugin marketplace
+### Alternative: self-hosted plugin marketplace
+
+stetkeep distributes a plugin catalog directly from GitHub — no Anthropic review required, works today:
 
 ```
 # In Claude Code
@@ -177,6 +179,17 @@ Inside Claude Code:
 ```
 
 Auto-loads subagents, commands, and the hook with no file copying into your project. Tradeoff: path-scoped rules (Layer D) and root-level protocol MDs cannot be packaged by the plugin spec, so they stay user-level. For the full experience use `npx stetkeep install`.
+
+### Anthropic official marketplace (under review)
+
+stetkeep has been submitted to Anthropic's official Claude Code plugin marketplace and is currently under review. Once approved, installation simplifies to a single command — no `marketplace add` step needed:
+
+```
+# In Claude Code — available once approved
+/plugin install stetkeep
+```
+
+Watch [chanjoongx/stetkeep](https://github.com/chanjoongx/stetkeep) releases for updates.
 
 ### Alternative: clone + run installer directly (for hacking on stetkeep)
 
@@ -190,7 +203,29 @@ Same flags as `npx stetkeep install` (`--mode`, `--force`, `--dry-run`). Use thi
 
 ---
 
-## 📦 Requirements
+## 🚀 Usage
+
+After install, three slash commands are available inside Claude Code. Type `/` to see them:
+
+| Command | What it does |
+|---|---|
+| `/brain-scan [path]` | Map your MD ecosystem — classifies all `.md` files, checks Safety Net wiring, proposes next steps |
+| `/craft-audit [path]` | Read-only structural scan — A1–A20 anti-pattern atlas + false-positive cross-check, returns 🟢/🟡/🔴 confidence-graded findings |
+| `/perf-audit [scope]` | Measurement-first baseline — guides Lighthouse + bundle analysis, returns Top 5 bottlenecks by Impact × User-pain |
+
+**Recommended first session:**
+
+```
+/brain-scan            # map what's in your project, check Safety Net status
+/craft-audit src/      # find structural issues — read-only, no edits yet
+/perf-audit            # baseline measurements — read-only, no edits yet
+```
+
+Both audit commands end with *"Proceed? (yes / reorder / cancel)"* — nothing is edited without an explicit go-ahead.
+
+---
+
+## ⚙️ Requirements
 
 - **Claude Code 2026+** (hooks, subagents, path-scoped rules, slash commands all require this)
 - **Node 20+** (bundled with Claude Code — you have it)
@@ -238,7 +273,7 @@ echo '{"tool_name":"Edit","tool_input":{"file_path":"legacy/x.ts"}}' \
 ls .claude/agents/
 # brain-router.md  craft-specialist.md  perf-specialist.md
 
-# 3. Slash commands (after restarting claude)
+# 3. Slash commands (after restarting Claude Code)
 # In Claude Code, type `/` — you should see /brain-scan, /craft-audit, /perf-audit
 
 # 4. Quick diagnostic (works in both install modes)
@@ -297,6 +332,7 @@ stetkeep/
 ├── BRAIN.md                     # routing protocol
 ├── CRAFT.md                     # refactor protocol + FP catalog
 ├── PERF.md                      # performance protocol + FP catalog
+├── CLAUDE.template.md           # user-facing CLAUDE.md template (npm-distributed)
 ├── ARCHITECTURE.md              # honest enforcement breakdown
 ├── BOOTSTRAP_GUIDE.md           # first-session walkthrough
 ├── PRIVACY.md                   # privacy policy (zero data collection)
@@ -315,7 +351,7 @@ stetkeep/
 
 We publish a pre-registered evaluation spec instead of hand-wavy numbers:
 
-📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — 50 test cases, 3 conditions (vanilla / stetkeep full / stetkeep Safety-Net-only), human rubric grading (Cohen's κ ≥ 0.75), paired bootstrap statistics, `~$18–25` per full run on Opus 4.7 (April 2026 pricing).
+📄 [`benchmark/SPEC.md`](benchmark/SPEC.md) — 50 test cases, 3 conditions (vanilla / stetkeep full / stetkeep Safety-Net-only), human rubric grading (Cohen's κ ≥ 0.75), paired bootstrap statistics.
 
 Results pending. We'll publish data + methodology, not a single percentage.
 
@@ -324,12 +360,12 @@ Results pending. We'll publish data + methodology, not a single percentage.
 ## ❓ FAQ
 
 ### Does the Safety Net actually work, or is it prompting theater?
-Layers A (permissions) and B (hook) are out-of-process and deterministic — they block edits before the tool fires, regardless of what Claude decided. Layer C (subagent tool scoping) is enforced at spawn — the tool simply isn't available. Layers D (path-scoped rules) and E (XML protocols + FP catalog) are heuristic — they bias the model but cannot guarantee behavior. Full breakdown in [ARCHITECTURE.md §1](ARCHITECTURE.md#1-enforcement-layers).
+Layers A (permissions) and B (hook) are out-of-process and deterministic — they block edits before the tool fires, regardless of what Claude decided. Layer C (subagent tool scoping) is enforced at spawn — `Write` (new file creation) is not in the toolset; `Edit` of existing files requires explicit user approval. Layers D (path-scoped rules) and E (XML protocols + FP catalog) are heuristic — they bias the model but cannot guarantee behavior. Full breakdown in [ARCHITECTURE.md §1](ARCHITECTURE.md#1-enforcement-layers).
 
 ### Does this work with Cursor / Codex / OpenCode?
 The XML protocols and false-positive catalog are plain Markdown — any AI that reads MD can use them. But the hook system, subagent tool scoping, and path-scoped rules are Claude Code 2026 features. Without them you lose the deterministic layers.
 
-### Why the brain metaphor?
+### Why BRAIN / CRAFT / PERF?
 It's a mnemonic — "BRAIN routes, CRAFT refactors, PERF measures" — not a cognitive claim. MD files are documents read by a language model. See [ARCHITECTURE.md §8](ARCHITECTURE.md#8-what-this-is-not).
 
 ### Does it work with existing `CLAUDE.md` and `memory/`?
@@ -337,9 +373,10 @@ Yes. `coexist` mode (default) preserves everything — only appends a 3-line boo
 
 ### npm install vs plugin marketplace?
 - **npm install**: gets you **everything** — the root protocols (BRAIN.md / CRAFT.md / PERF.md), path-scoped rules, settings template, plus the plugin components.
-- **Plugin marketplace**: gets you **only the plugin components** — subagents, slash commands, hook. Path-scoped rules and root-level protocols can't be packaged as a plugin, so they stay user-level.
+- **Self-hosted marketplace** (`/plugin marketplace add chanjoongx/stetkeep`): gets you **only the plugin components** — subagents, slash commands, hook. Path-scoped rules and root-level protocols can't be packaged as a plugin, so they stay user-level. Works today.
+- **Official Anthropic marketplace** (`/plugin install stetkeep`): same plugin components as above, single command, no `marketplace add` step. Currently under review.
 
-For full stetkeep behavior, use npm install. For lightweight subagent access, plugin install is enough.
+For the full stetkeep experience, use npm install. For lightweight subagent access, either plugin option works.
 
 ### Why the name "stetkeep"?
 `stet` is the traditional editorial mark from Latin *"let it stand"* — what editors write over proposed deletions to cancel them and preserve the original text. `stetkeep` applies the same principle to code: tell Claude to leave your intentional code alone.

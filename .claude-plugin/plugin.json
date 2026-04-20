@@ -1,6 +1,6 @@
 {
   "name": "stetkeep",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "XML protocol framework + false-positive catalog for Claude Code. Mechanical guardrails against AI refactoring mistakes via hooks, tool-scoped subagents, and path-scoped rules.",
   "author": {
     "name": "CJ Kim",

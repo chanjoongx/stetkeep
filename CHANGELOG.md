@@ -8,6 +8,24 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.6] — 2026-04-21
+
+### Changed — README accuracy pass + usage section
+
+Pure documentation release. No functional or protocol changes.
+
+- **Accuracy**: token count corrected to ~1–2K each (BRAIN ~1K · CRAFT ~1.5K · PERF ~1.8K); Anthropic docs URL updated to canonical `platform.claude.com`; FP table example broadened from `` `constants.js` `` to "config / data file"; architecture diagram "XML-catalog-driven" corrected to "path, ignore, marker-driven"; Layer C description clarified — `Write` blocked, `Edit` requires explicit user approval (two occurrences: Supporting layer + FAQ).
+- **New**: Usage section added (Install → Usage → Requirements); 3-command table with `/brain-scan`, `/craft-audit`, `/perf-audit` descriptions and recommended first-session flow.
+- **Marketplace split**: Install section now distinguishes self-hosted plugin marketplace (works today) from Anthropic official marketplace (under review); FAQ answer updated to match.
+- **Dynamic badge**: static `v0.4.5` version badge replaced with GitHub releases dynamic badge — auto-updates on tag push + `gh release create`.
+- **Polish**: Requirements emoji deduped (📦 → ⚙️); "restarting claude" → "restarting Claude Code"; `CLAUDE.template.md` added to repo layout; FAQ title "Why the brain metaphor?" → "Why BRAIN / CRAFT / PERF?"; benchmark pricing note removed.
+
+### No functional changes
+
+CLI behavior, hook decisions, plugin manifest, subagent tools, protocol structure: all identical to v0.4.5.
+
+---
+
 ## [0.4.5] — 2026-04-20
 
 ### Added — pre-submission supply chain signal
