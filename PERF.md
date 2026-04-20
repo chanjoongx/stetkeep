@@ -84,7 +84,7 @@ BROWNFIELD (main mode):
 | P6 | Unoptimized images | WebP/AVIF + srcset + `loading=lazy` + `decoding=async` |
 | P7 | Bundle bloat (>500KB initial) | Swap fat deps (moment->date-fns, lodash->lodash/x), dynamic import |
 | P8 | Duplicate fetches | React Query / SWR dedup |
-| P9 | No input debounce | `debounce(setQuery, 300)` via `useMemo` |
+| P9 | No input debounce | `useMemo(() => debounce(fn, 300), [])` + `useEffect` cleanup (naive `useMemo` leaks timers), or `use-debounce` |
 | P10 | Sync heavy computation in render | `useMemo` / Web Worker / `requestIdleCallback` |
 | P11 | Excess setState calls | Batch / reducer (watch async auto-batch edges) |
 | P12 | Huge dep for tiny feature | Hand-roll or lighter alternative |
@@ -95,7 +95,7 @@ BROWNFIELD (main mode):
 | P17 | Blocking fonts (FOIT) | `font-display: swap` + preload critical |
 | P18 | Layout thrashing | Batch reads, then writes |
 | P19 | Sync localStorage in render | Lazy `useState` init or move to effect |
-| P20 | Unnecessary SSR re-hydration | Selective hydration / islands |
+| P20 | Unnecessary SSR re-hydration | Islands architecture (Astro / Qwik) or trim `use client` boundaries. React 18 selective hydration is automatic, not a user-applied transform |
 </anti_patterns>
 
 <transformations>

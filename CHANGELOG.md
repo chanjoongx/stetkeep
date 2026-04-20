@@ -8,6 +8,32 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.3] — 2026-04-20
+
+### Fixed — protocol accuracy + first OIDC end-to-end validation
+
+Three protocol-content corrections identified in the 6-expert autonomous audit as Should-fix but deferred from v0.4.2:
+
+- **CRAFT.md A20** "Comment instead of refactor": example changed from `// TODO: careful` to `// HACK: works but fragile`, with a note that plain `// TODO` referencing an upstream fix is legitimate and not A20. The previous example conflated TODO comments (which CRAFT execution_rule line 144 asks to avoid in refactored code) with the actual code smell (hack/dead-end markers).
+- **PERF.md P9** "No input debounce": transform refined. `useMemo(() => debounce(fn, 300), [])` alone leaks timers on unmount. Correct pattern is `useMemo` + `useEffect` cleanup, or adopt `use-debounce`.
+- **PERF.md P20** "Unnecessary SSR re-hydration": transform updated. "Selective hydration" is React 18 automatic behavior, not a user-applied transform. Correct user-controllable alternatives are islands architecture (Astro / Qwik) or trimming `use client` boundaries.
+
+### Validated — OIDC trusted-publisher end-to-end
+
+This is the first release to ship exclusively via the `.github/workflows/publish.yml` OIDC pipeline (no manual `npm publish` on the local machine). If the workflow runs green:
+
+- Confirms Trusted Publisher configuration is correct
+- Provenance attestation automatically generated and linked on npm page
+- All future releases: `git tag vX.Y.Z && git push origin vX.Y.Z` one-liner
+
+If this fails in the same way v0.4.2's auto-publish attempt did, the v0.4.2 failure was NOT a race condition with manual publish but a genuine workflow/config issue, and we debug from there.
+
+### No other changes
+
+Protocol structure, CLI behavior, plugin manifest, hooks — all identical to v0.4.2.
+
+---
+
 ## [0.4.2] — 2026-04-20
 
 ### Fixed — npm registry README refresh (docs-only patch)

@@ -76,7 +76,7 @@ BROWNFIELD (existing src/):
 | A17 | Hidden side effects | `getX` also caches/logs | Rename to reveal |
 | A18 | Overloaded abstraction | 1 class does 5 things | Split |
 | A19 | Feature envy | `A.method` uses `B`'s fields | Move to B |
-| A20 | Comment instead of refactor | `// TODO: careful` | Rename + split |
+| A20 | Comment instead of refactor | `// HACK: works but fragile` (plain `// TODO` referencing upstream fix is OK) | Rename + split |
 </anti_patterns>
 
 <transformations>
