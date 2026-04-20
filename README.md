@@ -16,8 +16,8 @@
 [![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
-[![Version](https://img.shields.io/badge/version-v0.4.4-5FE5D4)](CHANGELOG.md)
-[![Provenance](https://img.shields.io/badge/npm-sigstore%20provenance-34D399?logo=sigstore)](https://registry.npmjs.org/-/npm/v1/attestations/stetkeep@0.4.4)
+[![Version](https://img.shields.io/badge/version-v0.4.5-5FE5D4)](CHANGELOG.md)
+[![Provenance](https://img.shields.io/badge/npm-sigstore%20provenance-34D399?logo=sigstore)](https://www.npmjs.com/package/stetkeep)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
 </div>

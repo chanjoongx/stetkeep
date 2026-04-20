@@ -8,6 +8,32 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.5] — 2026-04-20
+
+### Added — pre-submission supply chain signal
+
+Prep for Anthropic marketplace resubmission. Supply chain posture is now documented as prominently as the core functionality.
+
+- **`SECURITY.md`**: vulnerability reporting policy (`cj@stetkeep.com`, 72h SLA on acknowledgment), explicit supply chain attestations (OIDC Trusted Publisher, Sigstore SLSA v1 provenance, SHA-pinned Actions, zero runtime dependencies), declared scope of in-scope vs out-of-scope reports.
+- **README** now carries a Sigstore provenance badge and a dedicated "Security & supply chain" section between Contributing and License.
+- **`package.json`** `files` array includes `SECURITY.md` so the policy ships in the npm tarball, not just on GitHub.
+
+### Added — maintainer signal
+
+- `.github/ISSUE_TEMPLATE/bug.yml`: structured bug template with platform + install-path dropdowns and a hook-output capture field.
+- `.github/ISSUE_TEMPLATE/false_positive.yml`: dedicated template for the catalog's highest-leverage contribution (anti-pattern false-positives).
+- `.github/ISSUE_TEMPLATE/config.yml`: routes security reports privately, points open questions at Discussions.
+
+### Changed — minor cleanup
+
+- `lib/install.js`: drop `claude-brain` from the bootstrap detection regex. `claude-brain` was a pre-launch prototype name with no real installs; `mdbrain` and `stetkeep` remain for legitimate migration detection.
+
+### No functional changes
+
+CLI behavior, hook decisions, plugin manifest, subagent tools, protocol structure: all identical to v0.4.4.
+
+---
+
 ## [0.4.4] — 2026-04-20
 
 ### Fixed — OIDC publish workflow (Node 24 + npm v11+)
