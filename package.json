@@ -25,7 +25,9 @@
   },
   "homepage": "https://stetkeep.com",
   "keywords": [
+    "stetkeep",
     "claude-code",
+    "claude-code-plugin",
     "claude",
     "anthropic",
     "ai-agents",
@@ -33,6 +35,7 @@
     "prompt-engineering",
     "xml-protocols",
     "false-positive-catalog",
+    "guardrails",
     "code-refactoring",
     "ai-safety",
     "hooks",

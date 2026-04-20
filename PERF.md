@@ -30,8 +30,7 @@ Any NO => do not optimize.
 <perf_budget>
 Web Vitals defaults (tune per project):
   LCP  < 2.5s
-  FID  < 100ms
-  INP  < 200ms
+  INP  < 200ms      (replaced FID as Core Web Vital, Mar 2024)
   CLS  < 0.1
   TTI  < 3.8s
   TTFB < 800ms

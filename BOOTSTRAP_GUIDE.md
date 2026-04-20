@@ -42,7 +42,7 @@ They're referenced by the subagents and rules, but for orchestration visibility:
 
 That runs `.claude/commands/brain-scan.md`, which loads `BRAIN.md` and reports the MD ecosystem map.
 
-**If you haven't installed slash commands yet** (plain `stetkeep` files in project root):
+**If slash commands aren't available yet** (you ran `install` but haven't restarted `claude`, or you're using plain protocol files without the plugin):
 ```
 Read BRAIN.md and map this project's MD ecosystem. Classify each .md file as
 Protocol / Memory / Legacy / Generated.

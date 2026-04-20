@@ -127,8 +127,8 @@ project-root/
 ├── .perfignore                     # Layer B (read by hook)
 │
 └── .claude/
-    ├── settings.json               # Layer A + B (permissions + hook wiring)
-    ├── settings.example.json       # template you copy from
+    ├── settings.example.json       # template (always present after install)
+    ├── settings.json               # Layer A + B (user creates via `cp settings.example.json settings.json`)
     │
     ├── agents/                     # Layer C (tool-scoped subagents)
     │   ├── brain-router.md

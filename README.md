@@ -80,7 +80,7 @@ On top of the XML framework, stetkeep ships a five-layer defense:
 - **Layer D** — Path-scoped rules auto-load CRAFT/PERF on `src/**` file access (heuristic)
 - **Layer E** — XML protocols + false-positive catalog (heuristic)
 
-Layers A / B / C fire regardless of model attention. Layers D / E bias behavior. Honest breakdown in [`ARCHITECTURE.md §1`](ARCHITECTURE.md).
+Layers A / B / C fire regardless of model attention. Layers D / E bias behavior. Honest breakdown in [`ARCHITECTURE.md §1`](ARCHITECTURE.md#1-enforcement-layers).
 
 This part is **not novel** — [TDD-Guard](https://github.com/nizos/tdd-guard), [claude-guardrails](https://github.com/dwarvesf/claude-guardrails), and others already ship hook-based enforcement. stetkeep's wedge is the XML framework + FP catalog above; hooks are just the vehicle.
 
@@ -204,12 +204,12 @@ The `install.sh` is a thin wrapper over `node lib/install.js`. Use this only if 
 
 ## ⚖ vs. the 2026 ecosystem
 
-Honest comparison, based on [competitive research](https://github.com/chanjoongx/stetkeep/blob/main/CHANGELOG.md):
+Honest comparison (based on competitive research documented in [CHANGELOG v0.3.0](CHANGELOG.md)):
 
 | | **stetkeep** | [TDD-Guard](https://github.com/nizos/tdd-guard) | [claude-guardrails](https://github.com/dwarvesf/claude-guardrails) | [VoltAgent subagents](https://github.com/VoltAgent/awesome-claude-code-subagents) | [everything-claude-code](https://github.com/affaan-m/everything-claude-code) |
 |---|---|---|---|---|---|
 | **Scope** | XML protocols + FP catalog | TDD-specific blocking | Security permissions | Subagent library | Kitchen-sink toolkit |
-| **Stars (Apr 2026)** | v0.4.0 launch | 2K | 12 | 17.7K | 160K |
+| **Stars (Apr 2026)** | just launched | 2K | 12 | 17.7K | 160K |
 | **Hook enforcement** | ✅ | ✅ | ✅ | ❌ | ✅ |
 | **Tool-scoped subagents** | ✅ | ❌ | ❌ | ✅ | ✅ |
 | **XML-structured protocols** | ✅ | ❌ | ❌ | ❌ | ❌ |
@@ -328,13 +328,13 @@ Results pending. We'll publish data + methodology, not a single percentage.
 ## ❓ FAQ
 
 ### Does the Safety Net actually work, or is it prompting theater?
-Layers A (permissions) and B (hook) are out-of-process and deterministic — they block edits before the tool fires, regardless of what Claude decided. Layer C (subagent tool scoping) is enforced at spawn — the tool simply isn't available. Layers D (path-scoped rules) and E (XML protocols + FP catalog) are heuristic — they bias the model but cannot guarantee behavior. Full breakdown in [ARCHITECTURE.md §1](ARCHITECTURE.md).
+Layers A (permissions) and B (hook) are out-of-process and deterministic — they block edits before the tool fires, regardless of what Claude decided. Layer C (subagent tool scoping) is enforced at spawn — the tool simply isn't available. Layers D (path-scoped rules) and E (XML protocols + FP catalog) are heuristic — they bias the model but cannot guarantee behavior. Full breakdown in [ARCHITECTURE.md §1](ARCHITECTURE.md#1-enforcement-layers).
 
 ### Does this work with Cursor / Codex / OpenCode?
 The XML protocols and false-positive catalog are plain Markdown — any AI that reads MD can use them. But the hook system, subagent tool scoping, and path-scoped rules are Claude Code 2026 features. Without them you lose the deterministic layers.
 
 ### Why the brain metaphor?
-It's a mnemonic — "BRAIN routes, CRAFT refactors, PERF measures" — not a cognitive claim. MD files are documents read by a language model. See [ARCHITECTURE.md §8](ARCHITECTURE.md).
+It's a mnemonic — "BRAIN routes, CRAFT refactors, PERF measures" — not a cognitive claim. MD files are documents read by a language model. See [ARCHITECTURE.md §8](ARCHITECTURE.md#8-what-this-is-not).
 
 ### Does it work with existing `CLAUDE.md` and `memory/`?
 Yes. `coexist` mode (default) preserves everything — only appends a 3-line bootstrap reference to your CLAUDE.md. The `memory/` folder is detected and left untouched.
@@ -346,11 +346,9 @@ Yes. `coexist` mode (default) preserves everything — only appends a 3-line boo
 For full stetkeep behavior, use npm install. For lightweight subagent access, plugin install is enough.
 
 ### Why the name "stetkeep"?
-`stet` (Latin: *"let it stand"*) is the traditional editorial mark an editor writes over proposed deletions to cancel them and preserve the original text. `stetkeep` applies the same principle to code: tell Claude to leave your intentional code alone.
+`stet` is the traditional editorial mark from Latin *"let it stand"* — what editors write over proposed deletions to cancel them and preserve the original text. `stetkeep` applies the same principle to code: tell Claude to leave your intentional code alone.
 
-Two unrelated prior uses of "stet" exist in tech history: an IBM VM/CMS text editor from 1977 by Mike Cowlishaw (now historical, no active maintenance) and STET SA, a European payment processor (B2B, unrelated domain). stetkeep is neither of those. The name reclaims the original editorial meaning for AI-era code editing.
-
-This project was originally launched as `mdbrain` on 2026-04-19, but was renamed to `stetkeep` one day later after discovering a brand conflict with mediaire's `mdbrain` medical AI software. See [CHANGELOG v0.4.0](CHANGELOG.md) for the full story.
+Originally launched as `mdbrain` on 2026-04-19, renamed to `stetkeep` one day later after a brand conflict with mediaire's medical AI. See [CHANGELOG](CHANGELOG.md) for the full story.
 
 ### Built with AI?
 Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claude. The protocol's own Safety Net caught multiple attempts where Claude proposed to "improve" the protocol in self-defeating ways — which is exactly the kind of false-positive editing stetkeep is built to prevent.
@@ -361,10 +359,10 @@ Yes. Designed by [CJ Kim](https://github.com/chanjoongx) in iteration with Claud
 
 - [x] **v0.1** — protocol-only draft
 - [x] **v0.2** — Claude Code 2026 native mechanisms (hooks, subagents, path-scoped rules)
-- [x] **v0.3** — npm package, plugin manifest, ecosystem repositioning, Anthropic marketplace submission
-- [ ] **v0.3.1** — run the benchmark, publish results (`benchmark/SPEC.md` → real numbers)
-- [ ] **v0.4** — `npx stetkeep init` interactive + user feedback integration
-- [ ] **v0.5** — per-language variants (`CRAFT.python.md`, `CRAFT.rust.md`)
+- [x] **v0.3** — npm package, plugin manifest, Anthropic marketplace submission (as `mdbrain`)
+- [x] **v0.4** — renamed to `stetkeep` (brand disambiguation), post-launch audit fixes, OIDC trusted publishing + Sigstore provenance
+- [ ] **v0.5** — benchmark results (`benchmark/SPEC.md` → real numbers) + `npx stetkeep init` interactive
+- [ ] **v0.6** — per-language variants (`CRAFT.python.md`, `CRAFT.rust.md`)
 - [ ] **v1.0** — stable API, typed plugin configs
 
 ---

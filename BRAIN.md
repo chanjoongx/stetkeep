@@ -98,7 +98,7 @@ Mechanical layers always work. Behavioral layers improve most sessions but canno
 
 Run `/brain-scan` — if output includes the expected ecosystem map plus Safety Net status, BRAIN is working. If the command isn't recognized, the `.claude/commands/` directory wasn't installed.
 
-Run a harmless test: ask to edit a file in `legacy/`. The Safety Net hook should intercept. If it doesn't, `.claude/settings.json` isn't wiring the hook.
+Run a harmless test: ask to edit a file in `legacy/`. The Safety Net hook should intercept. If it doesn't: plugin users check that `hooks/hooks.json` auto-loaded (reinstall the plugin); npm-install users check that `.claude/settings.json` was copied from `.claude/settings.example.json` and wires the hook under `hooks.PreToolUse`.
 
 ## 🧭 North Star
 

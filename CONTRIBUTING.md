@@ -128,7 +128,7 @@ When editing any plugin artifact:
 
 1. Edit the **root** version first (e.g. `agents/brain-router.md`)
 2. Copy the change to the mirror (`.claude/agents/brain-router.md`)
-3. Both versions must stay byte-identical. A pre-commit sync check is on the roadmap; until then this is a manual discipline
+3. Both versions must stay byte-identical. CI enforces this via `.github/workflows/mirror-sync-check.yml` on every push/PR (runs `diff -rq` across the three pairs). Still manually check before committing to avoid CI red.
 
 Manual sync verification:
 ```bash
