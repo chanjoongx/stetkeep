@@ -1,0 +1,50 @@
+name: False-positive catalog entry
+description: Claude flagged a pattern as an anti-pattern when it shouldn't have. Propose a new false-positive for `CRAFT.md` or `PERF.md`.
+title: "[fp] "
+labels: ["false-positive-catalog"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The false-positive catalog is stetkeep's most behaviorally useful artifact. Every well-documented entry tightens Claude's discipline for everyone.
+  - type: input
+    id: flagged-as
+    attributes:
+      label: Claude flagged this as
+      description: The anti-pattern ID Claude named (e.g., "A3 Duplication", "P9 No input debounce")
+      placeholder: "A3 Duplication"
+    validations:
+      required: true
+  - type: textarea
+    id: reproducer
+    attributes:
+      label: Minimal reproducer (10–30 lines)
+      description: Paste the actual code pattern Claude mis-flagged.
+      render: typescript
+    validations:
+      required: true
+  - type: textarea
+    id: why-correct
+    attributes:
+      label: Why the code is actually correct (one sentence)
+      placeholder: "e.g. 'The three loops diverge in the loop body by one line that changes semantics.'"
+    validations:
+      required: true
+  - type: textarea
+    id: proposed-entry
+    attributes:
+      label: Proposed catalog entry
+      description: Draft row in the format `| Pattern | Why it's legitimate | Claude's mistake |`.
+      placeholder: "| Array of small loops that diverge in body | Each loop has distinct side effects | Collapsing loses semantics |"
+    validations:
+      required: false
+  - type: dropdown
+    id: target-file
+    attributes:
+      label: Target catalog file
+      options:
+        - CRAFT.md
+        - PERF.md
+        - Either
+    validations:
+      required: true

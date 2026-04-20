@@ -17,6 +17,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
 [![Version](https://img.shields.io/badge/version-v0.4.4-5FE5D4)](CHANGELOG.md)
+[![Provenance](https://img.shields.io/badge/npm-sigstore%20provenance-34D399?logo=sigstore)](https://registry.npmjs.org/-/npm/v1/attestations/stetkeep@0.4.4)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
 </div>
@@ -370,6 +371,18 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Highest-value contributions:
 - **New anti-pattern entries** (A21+, P21+) — with corresponding FP counterexamples
 - **Hook improvements** — edge cases, better path matching, platform fixes
 - **Benchmark corpus cases** — see [benchmark/SPEC.md §3](benchmark/SPEC.md)
+
+---
+
+## 🔐 Security & supply chain
+
+- Published to npm via **OIDC Trusted Publisher** (no long-lived `NPM_TOKEN`)
+- Every release carries a **Sigstore provenance attestation** (SLSA v1) bound to its source commit
+- **Zero runtime dependencies** (stdlib-only)
+- **No network calls** at install or hook time — see [`PRIVACY.md`](PRIVACY.md)
+- GitHub Actions pinned by commit SHA to prevent silent upstream changes
+
+Report vulnerabilities privately via [`SECURITY.md`](SECURITY.md).
 
 ---
 
