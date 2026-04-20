@@ -8,6 +8,22 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.4] — 2026-04-20
+
+### Fixed — OIDC publish workflow (Node 24 + npm v11+)
+
+v0.4.2 and v0.4.3 both failed the auto-publish step with a misleading `404 Not Found - stetkeep is not in this registry` error *after* Sigstore provenance signing succeeded. Root cause: `actions/setup-node@v4` with `node-version: 22` ships npm v10.x, which does not support the OIDC handshake required by npm's Trusted Publisher flow. npm CLI must be **>= 11.5.1**. See npm/cli issue #8976.
+
+Workflow changes:
+
+- `node-version: '22'` → `'24'` (Node 24 ships with npm v11)
+- Added explicit `npm install -g npm@latest` step after setup-node for belt-and-suspenders safety
+- Updated header comments to document the version requirement
+
+No package content changes vs v0.4.3. This release exists to validate that the fixed workflow publishes end-to-end via OIDC without a manual fallback.
+
+---
+
 ## [0.4.3] — 2026-04-20
 
 ### Fixed — protocol accuracy + first OIDC end-to-end validation

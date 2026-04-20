@@ -6,10 +6,17 @@ name: Publish to npm
 #
 # Setup required on npmjs.com (Settings > Trusted Publishers):
 #   Publisher:         GitHub Actions
-#   Organization/user: chanjoongx
-#   Repository:        stetkeep
-#   Workflow filename: publish.yml
+#   Organization/user: chanjoongx   (case sensitive)
+#   Repository:        stetkeep     (case sensitive)
+#   Workflow filename: publish.yml  (basename only, no path prefix)
 #   Environment:       (leave blank)
+#
+# IMPORTANT: OIDC trusted publishing requires npm CLI >= 11.5.1.
+# Node 22 ships with npm v10 which does NOT support the OIDC handshake
+# and will fail with misleading "404 Not Found - is not in this registry"
+# errors. Use Node 24 (which ships with npm v11+) OR explicitly upgrade
+# npm after setup-node. This workflow does both for safety.
+# See: https://github.com/npm/cli/issues/8976
 
 on:
   push:
@@ -31,11 +38,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js 22
+      - name: Setup Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Upgrade npm to latest (OIDC requires npm >= 11.5.1)
+        run: npm install -g npm@latest
 
       - name: Verify package integrity
         run: npm pack --dry-run

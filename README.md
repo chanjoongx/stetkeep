@@ -18,7 +18,7 @@
 [![npm](https://img.shields.io/npm/v/stetkeep?color=CB3837&logo=npm)](https://www.npmjs.com/package/stetkeep)
 [![License: MIT](https://img.shields.io/badge/License-MIT-A78BFA.svg)](https://opensource.org/licenses/MIT)
 [![Claude Code](https://img.shields.io/badge/Built%20for-Claude%20Code-D4A27F)](https://claude.com/claude-code)
-[![Version](https://img.shields.io/badge/version-v0.4.3-5FE5D4)](CHANGELOG.md)
+[![Version](https://img.shields.io/badge/version-v0.4.4-5FE5D4)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-7AB7FC)](CONTRIBUTING.md)
 
 </div>
