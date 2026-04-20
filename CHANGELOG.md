@@ -8,6 +8,25 @@ Semver: MAJOR.MINOR.PATCH.
 
 ---
 
+## [0.4.2] — 2026-04-20
+
+### Fixed — npm registry README refresh (docs-only patch)
+
+v0.4.1 shipped with the post-audit README already updated on GitHub, but npm pins the README at publish time (`stetkeep@0.4.1` tarball still served the pre-audit README). This patch republishes so the npm package page reflects the full 6-expert audit polish: Roadmap v0.4 completed, comparison table "just launched", FAQ "Why stetkeep?" shortened (IBM/STET SA defensive paragraph removed), ARCHITECTURE.md section anchors, BOOTSTRAP_GUIDE.md line 45 grammar, CONTRIBUTING.md mirror-sync CI reference, ARCHITECTURE.md §3 settings.json note, PRIVACY.md date, BRAIN.md hooks.json auto-load clarification, PERF.md FID removal.
+
+Also includes:
+- `.github/workflows/publish.yml`: concurrency guard + explicit `--provenance` flag
+- `.claude/settings.example.json`: ask-list adds `sudo *`, `curl * | sh`, `curl * | bash`, `wget * | sh` (supply-chain protection)
+- `package.json` keywords: added `stetkeep`, `claude-code-plugin`, `guardrails`
+
+### Note
+
+This is also the **first OIDC trusted-publisher test**. If the GitHub Actions `publish.yml` workflow succeeds end-to-end, subsequent releases become `git tag vX.Y.Z && git push origin vX.Y.Z` with no manual 2FA passkey interaction.
+
+No functional changes vs v0.4.1.
+
+---
+
 ## [0.4.1] — 2026-04-20
 
 ### Fixed — npm registry README freshness + bug fixes + platform parity
