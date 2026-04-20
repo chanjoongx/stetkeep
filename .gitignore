@@ -45,3 +45,4 @@ venv/
 # Local-only project context (never commit - contains personal/internal notes)
 CLAUDE.md
 docs/NEXT_SESSION.md
+docs/submission-package-*.md
